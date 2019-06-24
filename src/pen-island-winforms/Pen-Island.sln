@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp1", "WindowsFormsApp1\WindowsFormsApp1.csproj", "{CE3F871A-DDCD-4A76-94D9-D07FA9A24EA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pen-Island", "pen-island-core\Pen-Island.csproj", "{CE3F871A-DDCD-4A76-94D9-D07FA9A24EA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
