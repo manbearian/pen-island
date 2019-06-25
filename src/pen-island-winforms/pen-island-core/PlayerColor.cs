@@ -13,14 +13,14 @@ namespace PenIsland
     public partial class PlayerColorForm : Form
     {
         DotsBoard dotsBoard;
-        readonly Button[] buttons = new Button[9];
-        readonly Color[] oldColors = new Color[9];
-        readonly Color[] newColors = new Color[9];
+        readonly Button[] buttons = new Button[Player.MaxPlayers];
+        readonly Color[] oldColors = new Color[Player.MaxPlayers];
+        readonly Color[] newColors = new Color[Player.MaxPlayers];
 
         private bool Changed {
             get
             {
-                for (int i = 0; i < 9; ++i)
+                for (int i = 0; i < Player.MaxPlayers; ++i)
                     if (oldColors[i] != newColors[i])
                         return true;
                 return false;
@@ -50,7 +50,7 @@ namespace PenIsland
 
             var newColor = colorDialog1.Color;
 
-            for (int i = 0; i < 9; ++i)
+            for (int i = 0; i < Player.MaxPlayers; ++i)
             {
                 if (buttons[i] == sender)
                 {
@@ -67,7 +67,7 @@ namespace PenIsland
         {
             this.dotsBoard = dotsBoard;
 
-            for (int i = 0; i < 9; ++i)
+            for (int i = 0; i < Player.MaxPlayers; ++i)
             {
                 Color c = dotsBoard.GetPlayerColor(i + 1);
                 buttons[i].BackColor = c;
@@ -82,7 +82,7 @@ namespace PenIsland
         {
             if (Changed)
             {
-                for (int i = 0; i < 9; ++i)
+                for (int i = 0; i < Player.MaxPlayers; ++i)
                 {
                     dotsBoard.SetPlayerColor(i + 1, newColors[i]);
                 }

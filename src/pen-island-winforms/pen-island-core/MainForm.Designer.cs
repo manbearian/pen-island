@@ -72,13 +72,13 @@
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.settingsToolStripMenuItem.Text = "Game Settings...";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // playerColorsToolStripMenuItem
             // 
             this.playerColorsToolStripMenuItem.Name = "playerColorsToolStripMenuItem";
             this.playerColorsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.playerColorsToolStripMenuItem.Text = "Player Colors...";
-            this.playerColorsToolStripMenuItem.Click += new System.EventHandler(this.playerColorsToolStripMenuItem_Click);
             // 
             // dotsBoard
             // 

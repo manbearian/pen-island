@@ -26,7 +26,7 @@ namespace PenIsland
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dotsBoard.NewGame(2, 5, 5);
+            dotsBoard.NewGame();
             UpdateSize();
         }
 
@@ -34,6 +34,12 @@ namespace PenIsland
         {
             PlayerColorForm pc = new PlayerColorForm();
             pc.ShowDialog(dotsBoard);
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DotsSettingsForm gs = new DotsSettingsForm();
+            gs.ShowDialog(dotsBoard);
         }
     }
 

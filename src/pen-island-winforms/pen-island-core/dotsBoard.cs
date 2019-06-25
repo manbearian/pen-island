@@ -19,7 +19,9 @@ namespace PenIsland
 
         private DotsGame dotsGame;
 
-        Color[] playerColors = new Color[9];
+        Color[] playerColors = new Color[Player.MaxPlayers];
+
+        internal DotsGameSettings Settings { get; }
 
         public DotsBoard()
         {
@@ -34,11 +36,19 @@ namespace PenIsland
             SetPlayerColor(6, Color.Pink);
             SetPlayerColor(7, Color.Olive);
             SetPlayerColor(8, Color.Navy);
+
+            Settings = new DotsGameSettings();
+            Settings.PlayerCount = 2;
+            Settings.ComputerPlayers.Initialize();
+
+            Settings.BoardType = DotsBoardType.Squares;
+            Settings.Height = 5;
+            Settings.Width = 5;
         }
 
-        public void NewGame(int playerCount, int boardSizeX, int boardSizeY)
+        public void NewGame()
         {
-            dotsGame = new DotsGame(playerCount, boardSizeX, boardSizeY);
+            dotsGame = new DotsGame(Settings.PlayerCount, Settings.Width, Settings.Height);
 
             ClientSize = GetPreferedWindowSize();
             Invalidate();

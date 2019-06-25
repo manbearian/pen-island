@@ -9,5 +9,6 @@ namespace PenIsland
     class Player
     {
         public static int Invalid = -1;
+        public static int MaxPlayers = 9;
     }
 }

@@ -53,12 +53,20 @@
       <DependentUpon>dotsBoard.cs</DependentUpon>
     </Compile>
     <Compile Include="DotsGame.cs" />
+    <Compile Include="DotsGameSettings.cs" />
+    <Compile Include="DotsSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DotsSettingsForm.Designer.cs">
+      <DependentUpon>DotsSettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Player.cs" />
     <Compile Include="PlayerColor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +77,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="dotsBoard.resx">
       <DependentUpon>dotsBoard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DotsSettingsForm.resx">
+      <DependentUpon>DotsSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
