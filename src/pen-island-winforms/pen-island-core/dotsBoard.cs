@@ -19,9 +19,21 @@ namespace PenIsland
 
         private DotsGame dotsGame;
 
+        Color[] playerColors = new Color[9];
+
         public DotsBoard()
         {
             InitializeComponent();
+
+            SetPlayerColor(1, Color.Red);
+            SetPlayerColor(2, Color.Blue);
+            SetPlayerColor(3, Color.Green);
+            SetPlayerColor(4, Color.Purple);
+            SetPlayerColor(5, Color.Orange);
+            SetPlayerColor(6, Color.Silver);
+            SetPlayerColor(7, Color.Pink);
+            SetPlayerColor(8, Color.Olive);
+            SetPlayerColor(9, Color.Navy);
         }
 
         public void NewGame(int playerCount, int boardSizeX, int boardSizeY)
@@ -47,18 +59,18 @@ namespace PenIsland
             return new Size(dotsGame.Width * PreferedSpacer + PreferedDotSize, dotsGame.Height * PreferedSpacer + PreferedDotSize);
         }
 
-        public static Color GetPlayerColor(int i)
+        public Color GetPlayerColor(int i)
         {
-            switch (i)
-            {
-                case 0: throw new Exception("invalid player");
-                case 1: return Color.Red;
-                case 2: return Color.Blue;
-                case 3: return Color.Green;
-                case 4: return Color.Purple;
-            }
+            if (i < 1 || i > 9)
+                throw new Exception("invalid player");
+            return playerColors[i-1];
+        }
 
-            throw new Exception("too many players");
+        public void SetPlayerColor(int i, Color c)
+        {
+            if (i < 1 || i > 9)
+                throw new Exception("invalid player");
+            playerColors[i-1] = c;
         }
 
         private void DotsBoard_Paint(object sender, PaintEventArgs e)

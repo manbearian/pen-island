@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace PenIsland
 {
-    
-    class DotsGame
+    public class DotsGame
     {
         public DotsGame(int playerCount, int boardSizeX, int boardSizeY)
         {

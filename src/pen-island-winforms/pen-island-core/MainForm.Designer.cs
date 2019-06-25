@@ -31,9 +31,9 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dotsBoard = new PenIsland.DotsBoard();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playerColorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dotsBoard = new PenIsland.DotsBoard();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,14 +67,6 @@
             this.newGameToolStripMenuItem.Text = "New Game";
             this.newGameToolStripMenuItem.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
             // 
-            // dotsBoard
-            // 
-            this.dotsBoard.Location = new System.Drawing.Point(0, 26);
-            this.dotsBoard.Margin = new System.Windows.Forms.Padding(2);
-            this.dotsBoard.Name = "dotsBoard";
-            this.dotsBoard.Size = new System.Drawing.Size(305, 304);
-            this.dotsBoard.TabIndex = 1;
-            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
@@ -86,8 +78,17 @@
             this.playerColorsToolStripMenuItem.Name = "playerColorsToolStripMenuItem";
             this.playerColorsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.playerColorsToolStripMenuItem.Text = "Player Colors...";
+            this.playerColorsToolStripMenuItem.Click += new System.EventHandler(this.playerColorsToolStripMenuItem_Click);
             // 
-            // Form1
+            // dotsBoard
+            // 
+            this.dotsBoard.Location = new System.Drawing.Point(0, 26);
+            this.dotsBoard.Margin = new System.Windows.Forms.Padding(2);
+            this.dotsBoard.Name = "dotsBoard";
+            this.dotsBoard.Size = new System.Drawing.Size(305, 304);
+            this.dotsBoard.TabIndex = 1;
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -98,7 +99,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Dots";
             this.menuStrip1.ResumeLayout(false);

@@ -12,7 +12,6 @@ namespace PenIsland
 {
     public partial class MainForm : Form
     {
-
         public MainForm()
         {
             InitializeComponent();
@@ -29,6 +28,12 @@ namespace PenIsland
         {
             dotsBoard.NewGame(2, 5, 5);
             UpdateSize();
+        }
+
+        private void playerColorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PlayerColorForm pc = new PlayerColorForm();
+            pc.ShowDialog(dotsBoard);
         }
     }
 
