@@ -11,7 +11,7 @@ namespace PenIsland
         public DotsGame(int playerCount, int boardSizeX, int boardSizeY)
         {
             PlayerCount = playerCount;
-            CurrentPlayer = 1;
+            CurrentPlayer = 0;
 
             Width = boardSizeX;
             Height = boardSizeY;
@@ -19,6 +19,27 @@ namespace PenIsland
             hLines = new int[boardSizeX - 1, boardSizeY];
             vLines = new int[boardSizeX, boardSizeY - 1];
             squares = new int[boardSizeX - 1, boardSizeY - 1];
+
+            for (int i = 0; i < boardSizeX; ++i)
+            {
+                for (int j = 0; j < boardSizeY; ++j)
+                {
+                    bool c = i < (boardSizeX - 1);
+                    bool d = j < (boardSizeY - 1);
+                    if (c)
+                    {
+                        hLines[i, j] = Player.Invalid;
+                    }
+                    if (d)
+                    {
+                        vLines[i, j] = Player.Invalid;
+                    }
+                    if (c && d)
+                    {
+                        squares[i, j] = Player.Invalid;
+                    }
+                }
+            } 
         }
 
         public int PlayerCount { get; private set; }
@@ -34,42 +55,42 @@ namespace PenIsland
         {
             if ((col < (Width - 1)) && (row < Height))
                 return hLines[col, row];
-            return 0;
+            return Player.Invalid;
         }
         
         public int GetVertical(int col, int row)
         {
             if ((col < Width) && (row < (Height - 1)))
                 return vLines[col, row];
-            return 0;
+            return Player.Invalid;
         }
 
         public int GetSquare(int col, int row)
         {
             if ((col < (Width - 1)) && (row < (Height - 1)))
                 return squares[col, row];
-            return 0;
+            return Player.Invalid;
         }
 
         public void RecordHorizontal(int col, int row)
         {
-            System.Diagnostics.Debug.Assert(hLines[col, row] == 0);
+            System.Diagnostics.Debug.Assert(hLines[col, row] == Player.Invalid);
 
             hLines[col, row] = CurrentPlayer;
 
             // check for squares
             bool square = false;
-            if ((row > 0) && (GetHorizontal(col, row - 1) != 0)
-                && (GetVertical(col, row - 1) != 0)
-                && (GetVertical(col + 1, row -1) != 0))
+            if ((row > 0) && (GetHorizontal(col, row - 1) != Player.Invalid)
+                && (GetVertical(col, row - 1) != Player.Invalid)
+                && (GetVertical(col + 1, row -1) != Player.Invalid))
             {
                 RecordSquare(col, row - 1);
                 square = true;
             }
 
-            if ((GetHorizontal(col, row+1) != 0)
-                && (GetVertical(col, row) != 0)
-                && (GetVertical(col + 1, row) != 0))
+            if ((GetHorizontal(col, row+1) != Player.Invalid)
+                && (GetVertical(col, row) != Player.Invalid)
+                && (GetVertical(col + 1, row) != Player.Invalid))
             {
                 RecordSquare(col, row);
                 square = true;
@@ -83,24 +104,24 @@ namespace PenIsland
 
         public void RecordVertical(int col, int row)
         {
-            System.Diagnostics.Debug.Assert(vLines[col, row] == 0);
+            System.Diagnostics.Debug.Assert(vLines[col, row] == Player.Invalid);
 
             vLines[col, row] = CurrentPlayer;
 
             // check for squares
             bool square = false;
 
-            if ((col > 0) && (GetVertical(col - 1, row) != 0)
-                && (GetHorizontal(col - 1, row) != 0)
-                && (GetHorizontal(col - 1, row + 1) != 0))
+            if ((col > 0) && (GetVertical(col - 1, row) != Player.Invalid)
+                && (GetHorizontal(col - 1, row) != Player.Invalid)
+                && (GetHorizontal(col - 1, row + 1) != Player.Invalid))
             {
                 RecordSquare(col - 1, row);
                 square = true;
             }
 
-            if ((GetVertical(col + 1, row) != 0)
-                && (GetHorizontal(col, row) != 0)
-                && (GetHorizontal(col, row + 1) != 0))
+            if ((GetVertical(col + 1, row) != Player.Invalid)
+                && (GetHorizontal(col, row) != Player.Invalid)
+                && (GetHorizontal(col, row + 1) != Player.Invalid))
             {
                 RecordSquare(col, row);
                 square = true;
@@ -115,7 +136,7 @@ namespace PenIsland
         // only called internally when a line is recorded
         private void RecordSquare(int col, int row)
         {
-            System.Diagnostics.Debug.Assert(squares[col, row] == 0);
+            System.Diagnostics.Debug.Assert(squares[col, row] == Player.Invalid);
 
             squares[col, row] = CurrentPlayer;
         }
@@ -126,9 +147,9 @@ namespace PenIsland
         void EndTurn()
         {
             CurrentPlayer++;
-            if (CurrentPlayer > PlayerCount)
+            if (CurrentPlayer >= PlayerCount)
             {
-                CurrentPlayer = 1;
+                CurrentPlayer = 0;
             } 
         }
     }

@@ -25,15 +25,15 @@ namespace PenIsland
         {
             InitializeComponent();
 
-            SetPlayerColor(1, Color.Red);
-            SetPlayerColor(2, Color.Blue);
-            SetPlayerColor(3, Color.Green);
-            SetPlayerColor(4, Color.Purple);
-            SetPlayerColor(5, Color.Orange);
-            SetPlayerColor(6, Color.Silver);
-            SetPlayerColor(7, Color.Pink);
-            SetPlayerColor(8, Color.Olive);
-            SetPlayerColor(9, Color.Navy);
+            SetPlayerColor(0, Color.Red);
+            SetPlayerColor(1, Color.Blue);
+            SetPlayerColor(2, Color.Green);
+            SetPlayerColor(3, Color.Purple);
+            SetPlayerColor(4, Color.Orange);
+            SetPlayerColor(5, Color.Silver);
+            SetPlayerColor(6, Color.Pink);
+            SetPlayerColor(7, Color.Olive);
+            SetPlayerColor(8, Color.Navy);
         }
 
         public void NewGame(int playerCount, int boardSizeX, int boardSizeY)
@@ -61,16 +61,12 @@ namespace PenIsland
 
         public Color GetPlayerColor(int i)
         {
-            if (i < 1 || i > 9)
-                throw new Exception("invalid player");
-            return playerColors[i-1];
+            return playerColors[i];
         }
 
         public void SetPlayerColor(int i, Color c)
         {
-            if (i < 1 || i > 9)
-                throw new Exception("invalid player");
-            playerColors[i-1] = c;
+            playerColors[i] = c;
         }
 
         private void DotsBoard_Paint(object sender, PaintEventArgs e)
@@ -99,27 +95,27 @@ namespace PenIsland
             {
                 for (int j = 0; j < dotsGame.Height; ++j)
                 {
-                    int player = 0;
+                    int player = Player.Invalid;
                     int hStart = PreferedBorder + i * PreferedSpacer + PreferedDotSize / 2;
                     int vStart = PreferedBorder + j * PreferedSpacer + PreferedDotSize / 2;
 
                     // draw squares first so lines end up on top of them
                     player = dotsGame.GetSquare(i, j);
-                    if (player != 0)
+                    if (player != Player.Invalid)
                     {
                         var brush = new SolidBrush(GetPlayerColor(player));
                         g.FillRectangle(brush, hStart, vStart, PreferedSpacer, PreferedSpacer);
                     }
 
                     player = dotsGame.GetHorizontal(i, j);
-                    if (player != 0)
+                    if (player != Player.Invalid)
                     {
                         Pen pen = new Pen(GetPlayerColor(player));
                         g.DrawLine(pen, new Point(hStart, vStart), new Point(hStart + PreferedSpacer, vStart));
                     }
 
                     player = dotsGame.GetVertical(i, j);
-                    if (player != 0)
+                    if (player != Player.Invalid)
                     {
                         Pen pen = new Pen(GetPlayerColor(player));
                         g.DrawLine(pen, new Point(hStart, vStart), new Point(hStart, vStart + PreferedSpacer));
@@ -217,13 +213,13 @@ namespace PenIsland
             switch (clickedType)
             {
                 case LineType.Horizontal:
-                    if (dotsGame.GetHorizontal(clickedCol, clickedRow) != 0)
+                    if (dotsGame.GetHorizontal(clickedCol, clickedRow) != Player.Invalid)
                     {
                         clickedType = LineType.None;
                     }
                     break;
                 case LineType.Vertical:
-                    if (dotsGame.GetVertical(clickedCol, clickedRow) != 0)
+                    if (dotsGame.GetVertical(clickedCol, clickedRow) != Player.Invalid)
                     {
                         clickedType = LineType.None;
                     }
