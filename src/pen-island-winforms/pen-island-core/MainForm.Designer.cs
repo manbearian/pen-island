@@ -62,21 +62,21 @@
             // 
             this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
             this.newGameToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
+            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(246, 30);
             this.newGameToolStripMenuItem.Text = "New Game";
             this.newGameToolStripMenuItem.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(246, 30);
             this.settingsToolStripMenuItem.Text = "Game Settings...";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // playerColorsToolStripMenuItem
             // 
             this.playerColorsToolStripMenuItem.Name = "playerColorsToolStripMenuItem";
-            this.playerColorsToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
+            this.playerColorsToolStripMenuItem.Size = new System.Drawing.Size(246, 30);
             this.playerColorsToolStripMenuItem.Text = "Player Colors...";
             this.playerColorsToolStripMenuItem.Click += new System.EventHandler(this.playerColorsToolStripMenuItem_Click);
             // 
@@ -100,6 +100,7 @@
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Dots";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

@@ -20,7 +20,9 @@ namespace PenIsland
 
         private void UpdateSize()
         {
-            ClientSize = dotsBoard.ClientSize;
+            var width = dotsBoard.ClientSize.Width;
+            var height = dotsBoard.ClientSize.Height + 50;
+            ClientSize = new Size(width, height);
             Invalidate();
         }
 
@@ -40,6 +42,18 @@ namespace PenIsland
         {
             DotsSettingsForm gs = new DotsSettingsForm();
             gs.ShowDialog(dotsBoard);
+        }
+
+        private void MainForm_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+
+            if (dotsBoard.DotsGame != null)
+            {
+                var player = dotsBoard.DotsGame.CurrentPlayer;
+                var color = dotsBoard.GetPlayerColor(player);
+                g.DrawString(String.Format("Player {0}", player+1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+            }
         }
     }
 

@@ -87,7 +87,7 @@ namespace PenIsland
                     dotsBoard.SetPlayerColor(i, newColors[i]);
                 }
 
-                dotsBoard.Invalidate();
+                dotsBoard.Refresh();
             }
         }
 

@@ -17,7 +17,7 @@ namespace PenIsland
         int selectedCol = -1;
         int selectedRow = -1;
 
-        private DotsGame dotsGame;
+        public DotsGame DotsGame { get; private set; }
 
         Color[] playerColors = new Color[Player.MaxPlayers];
 
@@ -48,7 +48,7 @@ namespace PenIsland
 
         public void NewGame()
         {
-            dotsGame = new DotsGame(Settings.PlayerCount, Settings.Width, Settings.Height);
+            DotsGame = new DotsGame(Settings.PlayerCount, Settings.Width, Settings.Height);
 
             ClientSize = GetPreferedWindowSize();
             Invalidate();
@@ -66,7 +66,7 @@ namespace PenIsland
 
         public Size GetPreferedWindowSize()
         {
-            return new Size(dotsGame.Width * PreferedSpacer + PreferedDotSize, dotsGame.Height * PreferedSpacer + PreferedDotSize);
+            return new Size(DotsGame.Width * PreferedSpacer + PreferedDotSize, DotsGame.Height * PreferedSpacer + PreferedDotSize);
         }
 
         public Color GetPlayerColor(int i)
@@ -84,13 +84,13 @@ namespace PenIsland
             var g = e.Graphics;
             g.FillRectangle(Brushes.White, this.ClientRectangle);
 
-            if (dotsGame == null)
+            if (DotsGame == null)
                 return;
 
             // draw the dots
-            for (int i = 0; i < dotsGame.Width; ++i)
+            for (int i = 0; i < DotsGame.Width; ++i)
             {
-                for (int j = 0; j < dotsGame.Height; ++j)
+                for (int j = 0; j < DotsGame.Height; ++j)
                 {
                     var x = PreferedBorder + i * PreferedSpacer;
                     var y = PreferedBorder + j * PreferedSpacer;
@@ -101,30 +101,30 @@ namespace PenIsland
 
             // draw the state
 
-            for (int i = 0; i < dotsGame.Width; ++i)
+            for (int i = 0; i < DotsGame.Width; ++i)
             {
-                for (int j = 0; j < dotsGame.Height; ++j)
+                for (int j = 0; j < DotsGame.Height; ++j)
                 {
                     int player = Player.Invalid;
                     int hStart = PreferedBorder + i * PreferedSpacer + PreferedDotSize / 2;
                     int vStart = PreferedBorder + j * PreferedSpacer + PreferedDotSize / 2;
 
                     // draw squares first so lines end up on top of them
-                    player = dotsGame.GetSquare(i, j);
+                    player = DotsGame.GetSquare(i, j);
                     if (player != Player.Invalid)
                     {
                         var brush = new SolidBrush(GetPlayerColor(player));
                         g.FillRectangle(brush, hStart, vStart, PreferedSpacer, PreferedSpacer);
                     }
 
-                    player = dotsGame.GetHorizontal(i, j);
+                    player = DotsGame.GetHorizontal(i, j);
                     if (player != Player.Invalid)
                     {
                         Pen pen = new Pen(GetPlayerColor(player));
                         g.DrawLine(pen, new Point(hStart, vStart), new Point(hStart + PreferedSpacer, vStart));
                     }
 
-                    player = dotsGame.GetVertical(i, j);
+                    player = DotsGame.GetVertical(i, j);
                     if (player != Player.Invalid)
                     {
                         Pen pen = new Pen(GetPlayerColor(player));
@@ -170,7 +170,7 @@ namespace PenIsland
             if (e.Button != MouseButtons.Left)
                 return;
 
-            if (dotsGame == null)
+            if (DotsGame == null)
                 return;
 
             LineType clickedType = LineType.None;
@@ -181,7 +181,7 @@ namespace PenIsland
             // give a few pixes of fudge to either side. Use PreferedDotSize/2 as fudge.
             int fudge = PreferedDotSize / 2;
 
-            for (int i = 0; i < dotsGame.Width; ++i)
+            for (int i = 0; i < DotsGame.Width; ++i)
             {
                 if (e.X > PreferedBorder + i * PreferedSpacer - fudge
                     && e.X < PreferedBorder + i * PreferedSpacer + PreferedDotSize + fudge)
@@ -197,7 +197,7 @@ namespace PenIsland
                 }
             }
 
-            for (int i = 0; i < dotsGame.Height; ++i)
+            for (int i = 0; i < DotsGame.Height; ++i)
             {
                 if (e.Y > PreferedBorder + i * PreferedSpacer - fudge
                     && e.Y < PreferedBorder + i * PreferedSpacer + PreferedDotSize + fudge)
@@ -223,13 +223,13 @@ namespace PenIsland
             switch (clickedType)
             {
                 case LineType.Horizontal:
-                    if (dotsGame.GetHorizontal(clickedCol, clickedRow) != Player.Invalid)
+                    if (DotsGame.GetHorizontal(clickedCol, clickedRow) != Player.Invalid)
                     {
                         clickedType = LineType.None;
                     }
                     break;
                 case LineType.Vertical:
-                    if (dotsGame.GetVertical(clickedCol, clickedRow) != Player.Invalid)
+                    if (DotsGame.GetVertical(clickedCol, clickedRow) != Player.Invalid)
                     {
                         clickedType = LineType.None;
                     }
@@ -242,10 +242,10 @@ namespace PenIsland
                 switch (clickedType)
                 {
                     case LineType.Horizontal:
-                        dotsGame.RecordHorizontal(selectedCol, selectedRow);
+                        DotsGame.RecordHorizontal(selectedCol, selectedRow);
                         break;
                     case LineType.Vertical:
-                        dotsGame.RecordVertical(selectedCol, selectedRow);
+                        DotsGame.RecordVertical(selectedCol, selectedRow);
                         break;
                 }
 
@@ -258,8 +258,13 @@ namespace PenIsland
                 selectedCol = clickedCol;
             }
 
-            Invalidate();
+            Refresh();
         }
 
+        public void Refresh()
+        {
+            Invalidate();
+            Parent.Invalidate();
+        }
     }
 }
