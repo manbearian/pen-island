@@ -69,7 +69,7 @@ namespace PenIsland
 
             for (int i = 0; i < Player.MaxPlayers; ++i)
             {
-                Color c = dotsBoard.GetPlayerColor(i + 1);
+                Color c = dotsBoard.GetPlayerColor(i);
                 buttons[i].BackColor = c;
                 oldColors[i] = c;
                 newColors[i] = c;
@@ -84,7 +84,7 @@ namespace PenIsland
             {
                 for (int i = 0; i < Player.MaxPlayers; ++i)
                 {
-                    dotsBoard.SetPlayerColor(i + 1, newColors[i]);
+                    dotsBoard.SetPlayerColor(i, newColors[i]);
                 }
 
                 dotsBoard.Invalidate();
