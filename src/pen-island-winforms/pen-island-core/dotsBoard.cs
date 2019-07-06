@@ -52,6 +52,8 @@ namespace PenIsland
 
             ClientSize = GetPreferedWindowSize();
             Refresh();
+
+            RunComputerPlayers();
         }
 
         static readonly int PreferedDotSize = 5;
@@ -154,7 +156,6 @@ namespace PenIsland
             Refresh();
         }
 
-
         private void DotsBoard_MouseClick(object sender, MouseEventArgs e)
         {
             HandleClick(e);
@@ -170,7 +171,7 @@ namespace PenIsland
             if (e.Button != MouseButtons.Left)
                 return;
 
-            if (DotsGame == null || DotsGame.GameOver)
+            if (DotsGame == null || DotsGame.GameOver || Settings.ComputerPlayers[DotsGame.CurrentPlayer])
                 return;
 
             LineType clickedType = LineType.None;
@@ -259,6 +260,51 @@ namespace PenIsland
             }
 
             Parent.Refresh();
+
+            RunComputerPlayers();
+        }
+
+        void RunComputerPlayers()
+        {
+            if (DotsGame.GameOver)
+                return;
+
+            if (!Settings.ComputerPlayers[DotsGame.CurrentPlayer])
+            {
+                return;
+            }
+
+            // TODO: Invoke AI module to get the best posisble move
+
+            // Play first available
+            for (int i = 0; i < DotsGame.Width; ++i)
+            {
+                for (int j = 0; j < DotsGame.Height; ++j)
+                {
+                    if (i < (DotsGame.Width - 1))
+                    {
+                        if (DotsGame.GetHorizontal(i, j) == Player.Invalid)
+                        {
+                            DotsGame.RecordHorizontal(i, j);
+                            goto DONE;
+                        }
+                    }
+
+                    if (j < (DotsGame.Height - 1))
+                    {
+                        if (DotsGame.GetVertical(i, j) == Player.Invalid)
+                        {
+                            DotsGame.RecordVertical(i, j);
+                            goto DONE;
+                        }
+                    }
+                }
+            }
+
+DONE:
+            Parent.Refresh();
+
+            RunComputerPlayers();
         }
     }
 }
