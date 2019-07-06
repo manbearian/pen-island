@@ -23,13 +23,19 @@ namespace PenIsland
             var width = dotsBoard.ClientSize.Width;
             var height = dotsBoard.ClientSize.Height + 50;
             ClientSize = new Size(width, height);
-            Invalidate();
+            Refresh();
         }
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dotsBoard.NewGame();
-            UpdateSize();
+            DotsSettingsForm gs = new DotsSettingsForm();
+            gs.ShowDialog(dotsBoard);
+
+            if (gs.DialogResult == DialogResult.OK)
+            {
+                dotsBoard.NewGame();
+                UpdateSize();
+            }
         }
 
         private void playerColorsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -37,13 +43,7 @@ namespace PenIsland
             PlayerColorForm pc = new PlayerColorForm();
             pc.ShowDialog(dotsBoard);
         }
-
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DotsSettingsForm gs = new DotsSettingsForm();
-            gs.ShowDialog(dotsBoard);
-        }
-
+        
         private void MainForm_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;

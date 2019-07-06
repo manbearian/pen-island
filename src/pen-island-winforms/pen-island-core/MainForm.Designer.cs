@@ -31,7 +31,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playerColorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dotsBoard = new PenIsland.DotsBoard();
             this.menuStrip1.SuspendLayout();
@@ -52,7 +51,6 @@
             // 
             this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newGameToolStripMenuItem,
-            this.settingsToolStripMenuItem,
             this.playerColorsToolStripMenuItem});
             this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
             this.gameToolStripMenuItem.Size = new System.Drawing.Size(70, 29);
@@ -62,21 +60,14 @@
             // 
             this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
             this.newGameToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(246, 30);
-            this.newGameToolStripMenuItem.Text = "New Game";
+            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(258, 30);
+            this.newGameToolStripMenuItem.Text = "New Game...";
             this.newGameToolStripMenuItem.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
-            // 
-            // settingsToolStripMenuItem
-            // 
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(246, 30);
-            this.settingsToolStripMenuItem.Text = "Game Settings...";
-            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // playerColorsToolStripMenuItem
             // 
             this.playerColorsToolStripMenuItem.Name = "playerColorsToolStripMenuItem";
-            this.playerColorsToolStripMenuItem.Size = new System.Drawing.Size(246, 30);
+            this.playerColorsToolStripMenuItem.Size = new System.Drawing.Size(258, 30);
             this.playerColorsToolStripMenuItem.Text = "Player Colors...";
             this.playerColorsToolStripMenuItem.Click += new System.EventHandler(this.playerColorsToolStripMenuItem_Click);
             // 
@@ -114,7 +105,6 @@
         private System.Windows.Forms.ToolStripMenuItem gameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newGameToolStripMenuItem;
         private DotsBoard dotsBoard;
-        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem playerColorsToolStripMenuItem;
     }
 }

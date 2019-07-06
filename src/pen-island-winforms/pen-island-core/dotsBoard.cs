@@ -51,7 +51,7 @@ namespace PenIsland
             DotsGame = new DotsGame(Settings.PlayerCount, Settings.Width, Settings.Height);
 
             ClientSize = GetPreferedWindowSize();
-            Invalidate();
+            Refresh();
         }
 
         static readonly int PreferedDotSize = 5;
@@ -151,7 +151,7 @@ namespace PenIsland
         private void DotsBoard_Resize(object sender, EventArgs e)
         {
             // repaint on resize -- not needed yet, but in place for when i get scaling working
-            Invalidate();
+            Refresh();
         }
 
 
@@ -259,12 +259,6 @@ namespace PenIsland
             }
 
             Refresh();
-        }
-
-        public void Refresh()
-        {
-            Invalidate();
-            Parent.Invalidate();
         }
     }
 }
