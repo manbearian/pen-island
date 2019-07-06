@@ -160,6 +160,23 @@ namespace PenIsland
         public int CurrentPlayer { get; private set; }
         public bool GameOver { get; private set; }
 
+        public int[] Score
+        {
+            get
+            {
+                var scores = new int[PlayerCount];
+                foreach (var s in squares)
+                {
+                    if (s != Player.Invalid)
+                    {
+                        scores[s]++;
+                    }
+                }
+
+                return scores;
+            }
+        }
+
         void EndTurn()
         {
             CurrentPlayer++;

@@ -258,7 +258,7 @@ namespace PenIsland
                 selectedCol = clickedCol;
             }
 
-            Refresh();
+            Parent.Refresh();
         }
     }
 }

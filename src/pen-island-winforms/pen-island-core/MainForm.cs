@@ -47,20 +47,32 @@ namespace PenIsland
         private void MainForm_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
+            var game = dotsBoard.DotsGame;
 
-            if (dotsBoard.DotsGame != null)
+            if (game != null)
             {
-                if (!dotsBoard.DotsGame.GameOver)
+                if (!game.GameOver)
                 {
-                    var player = dotsBoard.DotsGame.CurrentPlayer;
+                    var player = game.CurrentPlayer;
                     var color = dotsBoard.GetPlayerColor(player);
                     g.DrawString(String.Format("Player {0}", player + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
                 }
                 else
                 {
-                    var player = 1;
-                    var color = dotsBoard.GetPlayerColor(player);
-                    g.DrawString(String.Format("Game Over, Player {0} Wins!", player + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+                    var score = game.Score;
+                    var winner = Player.Invalid;
+                    int topScore = 0;
+                    for (int i = 0; i < game.PlayerCount; ++i)
+                    {
+                        if (score[i] > topScore)
+                        {
+                            winner = i;
+                            topScore = score[i];
+                        }
+                    }
+
+                    var color = dotsBoard.GetPlayerColor(winner);
+                    g.DrawString(String.Format("Game Over, Player {0} Wins!", winner + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
                 }
             }
         }
