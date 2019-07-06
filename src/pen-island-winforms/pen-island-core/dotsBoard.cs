@@ -170,7 +170,7 @@ namespace PenIsland
             if (e.Button != MouseButtons.Left)
                 return;
 
-            if (DotsGame == null)
+            if (DotsGame == null || DotsGame.GameOver)
                 return;
 
             LineType clickedType = LineType.None;

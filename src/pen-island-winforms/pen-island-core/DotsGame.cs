@@ -139,10 +139,26 @@ namespace PenIsland
             System.Diagnostics.Debug.Assert(squares[col, row] == Player.Invalid);
 
             squares[col, row] = CurrentPlayer;
+
+            bool anyPlaysRemaining = false;
+            foreach (var s in squares)
+            {
+                if (s == Player.Invalid)
+                {
+                    anyPlaysRemaining = true;
+                    break;
+                }
+            }
+
+            if (!anyPlaysRemaining)
+            {
+                EndGame();
+            }
         }
 
 
         public int CurrentPlayer { get; private set; }
+        public bool GameOver { get; private set; }
 
         void EndTurn()
         {
@@ -151,6 +167,12 @@ namespace PenIsland
             {
                 CurrentPlayer = 0;
             } 
+        }
+
+        void EndGame()
+        {
+            CurrentPlayer = Player.Invalid;
+            GameOver = true;
         }
     }
 }

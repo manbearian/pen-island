@@ -50,9 +50,18 @@ namespace PenIsland
 
             if (dotsBoard.DotsGame != null)
             {
-                var player = dotsBoard.DotsGame.CurrentPlayer;
-                var color = dotsBoard.GetPlayerColor(player);
-                g.DrawString(String.Format("Player {0}", player+1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+                if (!dotsBoard.DotsGame.GameOver)
+                {
+                    var player = dotsBoard.DotsGame.CurrentPlayer;
+                    var color = dotsBoard.GetPlayerColor(player);
+                    g.DrawString(String.Format("Player {0}", player + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+                }
+                else
+                {
+                    var player = 1;
+                    var color = dotsBoard.GetPlayerColor(player);
+                    g.DrawString(String.Format("Game Over, Player {0} Wins!", player + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+                }
             }
         }
     }
