@@ -59,7 +59,7 @@ namespace PenIsland
                 }
                 else
                 {
-                    var score = game.Score;
+                    var score = game.ScoreBoard;
                     var winner = Player.Invalid;
                     int topScore = 0;
                     for (int i = 0; i < game.PlayerCount; ++i)

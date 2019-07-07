@@ -20,6 +20,8 @@ namespace PenIsland
             vLines = new int[boardSizeX, boardSizeY - 1];
             squares = new int[boardSizeX - 1, boardSizeY - 1];
 
+            scores = new int[playerCount];
+
             for (int i = 0; i < boardSizeX; ++i)
             {
                 for (int j = 0; j < boardSizeY; ++j)
@@ -39,7 +41,7 @@ namespace PenIsland
                         squares[i, j] = Player.Invalid;
                     }
                 }
-            } 
+            }
         }
 
         public int PlayerCount { get; private set; }
@@ -51,13 +53,15 @@ namespace PenIsland
         readonly int[,] vLines;
         readonly int[,] squares;
 
+        readonly int[] scores;
+
         public int GetHorizontal(int col, int row)
         {
             if ((col < (Width - 1)) && (row < Height))
                 return hLines[col, row];
             return Player.Invalid;
         }
-        
+
         public int GetVertical(int col, int row)
         {
             if ((col < Width) && (row < (Height - 1)))
@@ -82,13 +86,13 @@ namespace PenIsland
             bool square = false;
             if ((row > 0) && (GetHorizontal(col, row - 1) != Player.Invalid)
                 && (GetVertical(col, row - 1) != Player.Invalid)
-                && (GetVertical(col + 1, row -1) != Player.Invalid))
+                && (GetVertical(col + 1, row - 1) != Player.Invalid))
             {
                 RecordSquare(col, row - 1);
                 square = true;
             }
 
-            if ((GetHorizontal(col, row+1) != Player.Invalid)
+            if ((GetHorizontal(col, row + 1) != Player.Invalid)
                 && (GetVertical(col, row) != Player.Invalid)
                 && (GetVertical(col + 1, row) != Player.Invalid))
             {
@@ -139,6 +143,7 @@ namespace PenIsland
             System.Diagnostics.Debug.Assert(squares[col, row] == Player.Invalid);
 
             squares[col, row] = CurrentPlayer;
+            scores[CurrentPlayer]++;
 
             bool anyPlaysRemaining = false;
             foreach (var s in squares)
@@ -159,23 +164,7 @@ namespace PenIsland
 
         public int CurrentPlayer { get; private set; }
         public bool GameOver { get; private set; }
-
-        public int[] Score
-        {
-            get
-            {
-                var scores = new int[PlayerCount];
-                foreach (var s in squares)
-                {
-                    if (s != Player.Invalid)
-                    {
-                        scores[s]++;
-                    }
-                }
-
-                return scores;
-            }
-        }
+        public ScoreBoard ScoreBoard { get { return new ScoreBoard(scores); } }
 
         void EndTurn()
         {
@@ -183,7 +172,7 @@ namespace PenIsland
             if (CurrentPlayer >= PlayerCount)
             {
                 CurrentPlayer = 0;
-            } 
+            }
         }
 
         void EndGame()
