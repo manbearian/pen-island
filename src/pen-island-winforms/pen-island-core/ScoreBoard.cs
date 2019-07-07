@@ -1,4 +1,7 @@
-﻿namespace PenIsland
+﻿using System;
+using System.Collections.Generic;
+
+namespace PenIsland
 {
     public struct ScoreBoard
     {
@@ -14,8 +17,5 @@
             get { return scores[player]; }
             
         }
-
     }
-
-
 }

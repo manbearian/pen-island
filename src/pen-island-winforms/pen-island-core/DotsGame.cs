@@ -145,17 +145,31 @@ namespace PenIsland
             squares[col, row] = CurrentPlayer;
             scores[CurrentPlayer]++;
 
-            bool anyPlaysRemaining = false;
+            int playsRemaining = 0;
             foreach (var s in squares)
             {
                 if (s == Player.Invalid)
                 {
-                    anyPlaysRemaining = true;
-                    break;
+                    playsRemaining++;
                 }
             }
 
-            if (!anyPlaysRemaining)
+            int topScore = 0;
+            int nextScore = 0;
+            for (int i = 0; i < scores.Length; ++i)
+            {
+                if (scores[i] > topScore)
+                {
+                    nextScore = topScore;
+                    topScore = scores[i];
+                }
+                else if (scores[i] > nextScore)
+                {
+                    nextScore = scores[i];
+                }
+            }
+
+            if (playsRemaining == 0 || (topScore > (playsRemaining + nextScore)))
             {
                 EndGame();
             }
