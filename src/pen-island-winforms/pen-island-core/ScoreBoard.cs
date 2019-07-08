@@ -15,7 +15,6 @@ namespace PenIsland
         public int this[int player]
         {
             get { return scores[player]; }
-            
         }
     }
 }

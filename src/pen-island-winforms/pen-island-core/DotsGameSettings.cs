@@ -46,6 +46,7 @@ namespace PenIsland
                 width_ = value;
             }
         }
+
         public int Height
         {
             get { return height_; }

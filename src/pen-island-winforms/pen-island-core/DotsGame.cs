@@ -79,6 +79,7 @@ namespace PenIsland
         public void RecordHorizontal(int col, int row)
         {
             System.Diagnostics.Debug.Assert(hLines[col, row] == Player.Invalid);
+            System.Diagnostics.Debug.Assert(!GameOver);
 
             hLines[col, row] = CurrentPlayer;
 
@@ -92,6 +93,9 @@ namespace PenIsland
                 square = true;
             }
 
+            if (GameOver)
+                return;
+
             if ((GetHorizontal(col, row + 1) != Player.Invalid)
                 && (GetVertical(col, row) != Player.Invalid)
                 && (GetVertical(col + 1, row) != Player.Invalid))
@@ -99,6 +103,9 @@ namespace PenIsland
                 RecordSquare(col, row);
                 square = true;
             }
+
+            if (GameOver)
+                return;
 
             if (!square)
             {
@@ -109,6 +116,7 @@ namespace PenIsland
         public void RecordVertical(int col, int row)
         {
             System.Diagnostics.Debug.Assert(vLines[col, row] == Player.Invalid);
+            System.Diagnostics.Debug.Assert(!GameOver);
 
             vLines[col, row] = CurrentPlayer;
 
@@ -123,6 +131,9 @@ namespace PenIsland
                 square = true;
             }
 
+            if (GameOver)
+                return;
+
             if ((GetVertical(col + 1, row) != Player.Invalid)
                 && (GetHorizontal(col, row) != Player.Invalid)
                 && (GetHorizontal(col, row + 1) != Player.Invalid))
@@ -130,6 +141,9 @@ namespace PenIsland
                 RecordSquare(col, row);
                 square = true;
             }
+
+            if (GameOver)
+                return;
 
             if (!square)
             {
@@ -141,6 +155,7 @@ namespace PenIsland
         private void RecordSquare(int col, int row)
         {
             System.Diagnostics.Debug.Assert(squares[col, row] == Player.Invalid);
+            System.Diagnostics.Debug.Assert(!GameOver);
 
             squares[col, row] = CurrentPlayer;
             scores[CurrentPlayer]++;
