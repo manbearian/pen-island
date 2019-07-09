@@ -60,19 +60,41 @@ namespace PenIsland
                 else
                 {
                     var score = game.ScoreBoard;
-                    var winner = Player.Invalid;
+                    List<int> winners = new List<int>();
                     int topScore = 0;
                     for (int i = 0; i < game.PlayerCount; ++i)
                     {
                         if (score[i] > topScore)
                         {
-                            winner = i;
+                            winners.Clear();
+                            winners.Add(i);
                             topScore = score[i];
+                        }
+                        else if (score[i] == topScore)
+                        {
+                            winners.Add(i);
                         }
                     }
 
-                    var color = dotsBoard.GetPlayerColor(winner);
-                    g.DrawString(String.Format("Game Over, Player {0} Wins!", winner + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+                    if (winners.Count == game.PlayerCount)
+                    {
+                        // tie game
+                        var color = Color.Black;
+                        g.DrawString(String.Format("Game Over, It's a Draw!"), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+
+                    }
+                    else if (winners.Count > 1)
+                    {
+                        // tie game
+                        var color = Color.Black;
+                        g.DrawString(String.Format("Game Over, Multi-winner!"), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+                    }
+                    else
+                    {
+                        var winner = winners[0];
+                        var color = dotsBoard.GetPlayerColor(winner);
+                        g.DrawString(String.Format("Game Over, Player {0} Wins!", winner + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+                    }
                 }
             }
         }

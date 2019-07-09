@@ -6,7 +6,28 @@ using System.Threading.Tasks;
 
 namespace PenIsland
 {
-    public class DotsGame
+    enum LineType { None, Horizontal, Vertical };
+
+    struct LineInfo
+    {
+        public LineType LineType;
+        public int X;
+        public int Y;
+
+        public LineInfo(LineType lineType, int x, int y)
+        {
+            LineType = lineType;
+            X = x;
+            Y = y;
+        }
+
+        public static LineInfo Invalid
+        {
+            get { return new LineInfo(LineType.None, -1, -1); }
+        }
+    }
+
+    class DotsGame
     {
         public DotsGame(int playerCount, int boardSizeX, int boardSizeY)
         {
@@ -76,7 +97,51 @@ namespace PenIsland
             return Player.Invalid;
         }
 
-        public void RecordHorizontal(int col, int row)
+        public bool IsValid(LineInfo line)
+        {
+            if (line.LineType == LineType.None)
+                return false;
+            if (line.X < 0 || line.X >= Width)
+                return false;
+            if (line.Y < 0 || line.Y >= Height)
+                return false;
+            return true;
+        }
+
+        public int GetMove(LineInfo move)
+        {
+            System.Diagnostics.Debug.Assert(IsValid(move));
+
+            switch (move.LineType)
+            {
+                case LineType.Horizontal:
+                    return hLines[move.X, move.Y];
+                case LineType.Vertical:
+                    return vLines[move.X, move.Y];
+                default:
+                    throw new Exception("unexpected line type");
+            }
+        }
+
+        public void RecordMove(LineInfo move)
+        {
+            System.Diagnostics.Debug.Assert(IsValid(move));
+
+            switch (move.LineType)
+            {
+                case LineType.Horizontal:
+                    RecordHorizontal(move.X, move.Y);
+                    break;
+                case LineType.Vertical:
+                    RecordVertical(move.X, move.Y);
+                    break;
+                default:
+                    throw new Exception("unexpected line type");
+            }
+
+        }
+
+        void RecordHorizontal(int col, int row)
         {
             System.Diagnostics.Debug.Assert(hLines[col, row] == Player.Invalid);
             System.Diagnostics.Debug.Assert(!GameOver);
@@ -113,7 +178,7 @@ namespace PenIsland
             }
         }
 
-        public void RecordVertical(int col, int row)
+        void RecordVertical(int col, int row)
         {
             System.Diagnostics.Debug.Assert(vLines[col, row] == Player.Invalid);
             System.Diagnostics.Debug.Assert(!GameOver);
@@ -151,8 +216,7 @@ namespace PenIsland
             }
         }
 
-        // only called internally when a line is recorded
-        private void RecordSquare(int col, int row)
+        void RecordSquare(int col, int row)
         {
             System.Diagnostics.Debug.Assert(squares[col, row] == Player.Invalid);
             System.Diagnostics.Debug.Assert(!GameOver);

@@ -12,12 +12,9 @@ namespace PenIsland
 {
     public partial class DotsBoard : UserControl
     {
-        enum LineType { None, Horizontal, Vertical };
-        LineType selectedType = LineType.None;
-        int selectedCol = -1;
-        int selectedRow = -1;
+        LineInfo selectedLine = LineInfo.Invalid;
 
-        public DotsGame DotsGame { get; private set; }
+        internal DotsGame DotsGame { get; private set; }
 
         Color[] playerColors = new Color[Player.MaxPlayers];
 
@@ -137,9 +134,9 @@ namespace PenIsland
 
             // draw the current selection
 
-            int hSelStart = PreferedBorder + selectedCol * PreferedSpacer + PreferedDotSize / 2;
-            int vSelStart = PreferedBorder + selectedRow * PreferedSpacer + PreferedDotSize / 2;
-            switch (selectedType)
+            int hSelStart = PreferedBorder + selectedLine.X * PreferedSpacer + PreferedDotSize / 2;
+            int vSelStart = PreferedBorder + selectedLine.Y * PreferedSpacer + PreferedDotSize / 2;
+            switch (selectedLine.LineType)
             {
                 case LineType.Horizontal:
                     g.DrawLine(Pens.Aquamarine, new Point(hSelStart, vSelStart), new Point(hSelStart + PreferedSpacer, vSelStart));
@@ -174,9 +171,7 @@ namespace PenIsland
             if (DotsGame == null || DotsGame.GameOver || Settings.ComputerPlayers[DotsGame.CurrentPlayer])
                 return;
 
-            LineType clickedType = LineType.None;
-            int clickedCol = 0;
-            int clickedRow = 0;
+            LineInfo clickedLine = new LineInfo();
 
             // first row of dots starts at `PreferedBorder` and is `PreferedDotSize` wide
             // give a few pixes of fudge to either side. Use PreferedDotSize/2 as fudge.
@@ -187,14 +182,14 @@ namespace PenIsland
                 if (e.X > PreferedBorder + i * PreferedSpacer - fudge
                     && e.X < PreferedBorder + i * PreferedSpacer + PreferedDotSize + fudge)
                 {
-                    clickedType = LineType.Vertical;
-                    clickedCol = i;
+                    clickedLine.LineType = LineType.Vertical;
+                    clickedLine.X = i;
                     break;
                 }
 
                 if (e.X > PreferedBorder + i * PreferedSpacer + PreferedDotSize)
                 {
-                    clickedCol = i;
+                    clickedLine.X = i;
                 }
             }
 
@@ -203,60 +198,55 @@ namespace PenIsland
                 if (e.Y > PreferedBorder + i * PreferedSpacer - fudge
                     && e.Y < PreferedBorder + i * PreferedSpacer + PreferedDotSize + fudge)
                 {
-                    if (clickedType == LineType.Vertical)
+                    if (clickedLine.LineType == LineType.Vertical)
                     {
-                        clickedType = LineType.None;
+                        clickedLine.LineType = LineType.None;
                         break;
                     }
 
-                    clickedType = LineType.Horizontal;
-                    clickedRow = i;
+                    clickedLine.LineType = LineType.Horizontal;
+                    clickedLine.Y = i;
                     break;
                 }
 
                 if (e.Y > PreferedBorder + i * PreferedSpacer + PreferedDotSize)
                 {
-                    clickedRow = i;
+                    clickedLine.Y = i;
                 }
             }
 
             // don't allow selection of already played moves
-            switch (clickedType)
+            switch (clickedLine.LineType)
             {
                 case LineType.Horizontal:
-                    if (DotsGame.GetHorizontal(clickedCol, clickedRow) != Player.Invalid)
+                    if (DotsGame.GetHorizontal(clickedLine.X, clickedLine.Y) != Player.Invalid)
                     {
-                        clickedType = LineType.None;
+                        clickedLine.LineType = LineType.None;
                     }
                     break;
                 case LineType.Vertical:
-                    if (DotsGame.GetVertical(clickedCol, clickedRow) != Player.Invalid)
+                    if (DotsGame.GetVertical(clickedLine.X, clickedLine.Y) != Player.Invalid)
                     {
-                        clickedType = LineType.None;
+                        clickedLine.LineType = LineType.None;
                     }
                     break;
             }
 
-            if ((clickedType == selectedType && clickedRow == selectedRow && clickedCol == selectedCol)
+            if ((clickedLine.LineType == selectedLine.LineType && clickedLine.X == selectedLine.X && clickedLine.Y == selectedLine.Y)
                 || (e.Clicks > 1))
             {
-                switch (clickedType)
+                if (clickedLine.LineType != LineType.None)
                 {
-                    case LineType.Horizontal:
-                        DotsGame.RecordHorizontal(selectedCol, selectedRow);
-                        break;
-                    case LineType.Vertical:
-                        DotsGame.RecordVertical(selectedCol, selectedRow);
-                        break;
+                    DotsGame.RecordMove(clickedLine);
                 }
 
-                selectedType = LineType.None;
+                selectedLine.LineType = LineType.None;
             }
             else
             {
-                selectedType = clickedType;
-                selectedRow = clickedRow;
-                selectedCol = clickedCol;
+                selectedLine.LineType = clickedLine.LineType;
+                selectedLine.X = clickedLine.X;
+                selectedLine.Y = clickedLine.Y;
             }
 
             Parent.Refresh();
@@ -274,34 +264,8 @@ namespace PenIsland
                 return;
             }
 
-            // TODO: Invoke AI module to get the best posisble move
-
-            // Play first available
-            for (int i = 0; i < DotsGame.Width; ++i)
-            {
-                for (int j = 0; j < DotsGame.Height; ++j)
-                {
-                    if (i < (DotsGame.Width - 1))
-                    {
-                        if (DotsGame.GetHorizontal(i, j) == Player.Invalid)
-                        {
-                            DotsGame.RecordHorizontal(i, j);
-                            goto DONE;
-                        }
-                    }
-
-                    if (j < (DotsGame.Height - 1))
-                    {
-                        if (DotsGame.GetVertical(i, j) == Player.Invalid)
-                        {
-                            DotsGame.RecordVertical(i, j);
-                            goto DONE;
-                        }
-                    }
-                }
-            }
-
-DONE:
+            DotsAutoPlayer.MakeMove(DotsGame);
+            
             Parent.Refresh();
 
             RunComputerPlayers();
