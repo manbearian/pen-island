@@ -14,7 +14,6 @@ namespace PenIsland
     class DotsGameSettings
     {
         int playerCount_ = 2;
-        public bool[] ComputerPlayers = new bool[Player.MaxPlayers];
 
         public DotsGameSettings() { }
 

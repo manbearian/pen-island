@@ -14,21 +14,9 @@ namespace PenIsland
     {
         private DotsBoard dotsBoard;
 
-        private CheckBox[] computerPlayerCheckBoxes = new CheckBox[Player.MaxPlayers];
-
         public DotsSettingsForm()
         {
             InitializeComponent();
-
-            computerPlayerCheckBoxes[0] = checkBox1;
-            computerPlayerCheckBoxes[1] = checkBox2;
-            computerPlayerCheckBoxes[2] = checkBox3;
-            computerPlayerCheckBoxes[3] = checkBox4;
-            computerPlayerCheckBoxes[4] = checkBox5;
-            computerPlayerCheckBoxes[5] = checkBox6;
-            computerPlayerCheckBoxes[6] = checkBox7;
-            computerPlayerCheckBoxes[7] = checkBox8;
-            computerPlayerCheckBoxes[8] = checkBox9;
         }
 
         public void ShowDialog(DotsBoard dotsBoard)
@@ -37,11 +25,6 @@ namespace PenIsland
 
             playerCountBox.SelectedIndex = dotsBoard.Settings.PlayerCount - 2;
             
-            for (int i = 0; i < Player.MaxPlayers; ++i)
-            {
-                computerPlayerCheckBoxes[i].Checked = dotsBoard.Settings.ComputerPlayers[i];
-            }
-
             // assume boardTypeBox and BoardType enum are in sync
             boardTypeBox.SelectedIndex = (int)dotsBoard.Settings.BoardType;
 
@@ -67,10 +50,6 @@ namespace PenIsland
         {
             // player settings
             dotsBoard.Settings.PlayerCount = int.Parse((string)playerCountBox.SelectedItem);
-            for (int i = 0; i < Player.MaxPlayers; ++i)
-            {
-                dotsBoard.Settings.ComputerPlayers[i] = computerPlayerCheckBoxes[i].Checked;
-            }
 
             // board settings
             dotsBoard.Settings.BoardType = (DotsBoardType)boardTypeBox.SelectedIndex; // assume boardTypeBox and BoardType enum are in sync
@@ -85,9 +64,7 @@ namespace PenIsland
             {
                 dotsBoard.Settings.Width = val;
             }
-
         }
-
 
     }
 }

@@ -22,5 +22,221 @@ namespace PenIsland.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color ColorPlayer1 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorPlayer1"]));
+            }
+            set {
+                this["ColorPlayer1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
+        public global::System.Drawing.Color ColorPlayer2 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorPlayer2"]));
+            }
+            set {
+                this["ColorPlayer2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Green")]
+        public global::System.Drawing.Color ColorPlayer3 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorPlayer3"]));
+            }
+            set {
+                this["ColorPlayer3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Purple")]
+        public global::System.Drawing.Color ColorPlayer4 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorPlayer4"]));
+            }
+            set {
+                this["ColorPlayer4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Orange")]
+        public global::System.Drawing.Color ColorPlayer5 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorPlayer5"]));
+            }
+            set {
+                this["ColorPlayer5"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Silver")]
+        public global::System.Drawing.Color ColorPlayer6 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorPlayer6"]));
+            }
+            set {
+                this["ColorPlayer6"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Pink")]
+        public global::System.Drawing.Color ColorPlayer7 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorPlayer7"]));
+            }
+            set {
+                this["ColorPlayer7"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Olive")]
+        public global::System.Drawing.Color ColorPlayer8 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorPlayer8"]));
+            }
+            set {
+                this["ColorPlayer8"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Navy")]
+        public global::System.Drawing.Color ColorPlayer9 {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorPlayer9"]));
+            }
+            set {
+                this["ColorPlayer9"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ControllerPlayer1 {
+            get {
+                return ((int)(this["ControllerPlayer1"]));
+            }
+            set {
+                this["ControllerPlayer1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ControllerPlayer2 {
+            get {
+                return ((int)(this["ControllerPlayer2"]));
+            }
+            set {
+                this["ControllerPlayer2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ControllerPlayer3 {
+            get {
+                return ((int)(this["ControllerPlayer3"]));
+            }
+            set {
+                this["ControllerPlayer3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ControllerPlayer4 {
+            get {
+                return ((int)(this["ControllerPlayer4"]));
+            }
+            set {
+                this["ControllerPlayer4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ControllerPlayer5 {
+            get {
+                return ((int)(this["ControllerPlayer5"]));
+            }
+            set {
+                this["ControllerPlayer5"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ControllerPlayer6 {
+            get {
+                return ((int)(this["ControllerPlayer6"]));
+            }
+            set {
+                this["ControllerPlayer6"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ControllerPlayer7 {
+            get {
+                return ((int)(this["ControllerPlayer7"]));
+            }
+            set {
+                this["ControllerPlayer7"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ControllerPlayer8 {
+            get {
+                return ((int)(this["ControllerPlayer8"]));
+            }
+            set {
+                this["ControllerPlayer8"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ControllerPlayer9 {
+            get {
+                return ((int)(this["ControllerPlayer9"]));
+            }
+            set {
+                this["ControllerPlayer9"] = value;
+            }
+        }
     }
 }

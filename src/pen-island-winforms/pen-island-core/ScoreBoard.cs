@@ -5,7 +5,7 @@ namespace PenIsland
 {
     public struct ScoreBoard
     {
-        private int[] scores;
+        readonly private int[] scores;
 
         public ScoreBoard(int [] scores)
         {

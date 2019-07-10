@@ -40,7 +40,7 @@ namespace PenIsland
 
         private void playerColorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PlayerColorForm pc = new PlayerColorForm();
+            PlayerSettingsForm pc = new PlayerSettingsForm();
             pc.ShowDialog(dotsBoard);
         }
         
@@ -54,7 +54,7 @@ namespace PenIsland
                 if (!game.GameOver)
                 {
                     var player = game.CurrentPlayer;
-                    var color = dotsBoard.GetPlayerColor(player);
+                    var color = PlayerSettings.GetPlayerColor(player);
                     g.DrawString(String.Format("Player {0}", player + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
                 }
                 else
@@ -80,20 +80,20 @@ namespace PenIsland
                     {
                         // tie game
                         var color = Color.Black;
-                        g.DrawString(String.Format("Game Over, It's a Draw!"), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+                        g.DrawString(string.Format("Game Over, It's a Draw!"), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
 
                     }
                     else if (winners.Count > 1)
                     {
                         // tie game
                         var color = Color.Black;
-                        g.DrawString(String.Format("Game Over, Multi-winner!"), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+                        g.DrawString(string.Format("Game Over, Multi-winner!"), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
                     }
                     else
                     {
                         var winner = winners[0];
-                        var color = dotsBoard.GetPlayerColor(winner);
-                        g.DrawString(String.Format("Game Over, Player {0} Wins!", winner + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
+                        var color = PlayerSettings.GetPlayerColor(winner);
+                        g.DrawString(string.Format("Game Over, Player {0} Wins!", winner + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
                     }
                 }
             }

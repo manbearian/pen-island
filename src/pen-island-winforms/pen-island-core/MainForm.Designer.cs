@@ -68,7 +68,7 @@
             // 
             this.playerColorsToolStripMenuItem.Name = "playerColorsToolStripMenuItem";
             this.playerColorsToolStripMenuItem.Size = new System.Drawing.Size(258, 30);
-            this.playerColorsToolStripMenuItem.Text = "Player Colors...";
+            this.playerColorsToolStripMenuItem.Text = "Player Settings...";
             this.playerColorsToolStripMenuItem.Click += new System.EventHandler(this.playerColorsToolStripMenuItem_Click);
             // 
             // dotsBoard
@@ -90,7 +90,7 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Dots";
+            this.Text = "Pen Island";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

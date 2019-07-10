@@ -23,20 +23,10 @@ namespace PenIsland
         public DotsBoard()
         {
             InitializeComponent();
-
-            SetPlayerColor(0, Color.Red);
-            SetPlayerColor(1, Color.Blue);
-            SetPlayerColor(2, Color.Green);
-            SetPlayerColor(3, Color.Purple);
-            SetPlayerColor(4, Color.Orange);
-            SetPlayerColor(5, Color.Silver);
-            SetPlayerColor(6, Color.Pink);
-            SetPlayerColor(7, Color.Olive);
-            SetPlayerColor(8, Color.Navy);
+            
 
             Settings = new DotsGameSettings();
             Settings.PlayerCount = 2;
-            Settings.ComputerPlayers.Initialize();
 
             Settings.BoardType = DotsBoardType.Squares;
             Settings.Height = 5;
@@ -46,7 +36,7 @@ namespace PenIsland
         public void NewGame()
         {
             DotsGame = new DotsGame(Settings.PlayerCount, Settings.Width, Settings.Height);
-
+            
             ClientSize = GetPreferedWindowSize();
             Refresh();
 
@@ -67,17 +57,7 @@ namespace PenIsland
         {
             return new Size(DotsGame.Width * PreferedSpacer + PreferedDotSize, DotsGame.Height * PreferedSpacer + PreferedDotSize);
         }
-
-        public Color GetPlayerColor(int i)
-        {
-            return playerColors[i];
-        }
-
-        public void SetPlayerColor(int i, Color c)
-        {
-            playerColors[i] = c;
-        }
-
+        
         private void DotsBoard_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
@@ -112,21 +92,21 @@ namespace PenIsland
                     player = DotsGame.GetSquare(i, j);
                     if (player != Player.Invalid)
                     {
-                        var brush = new SolidBrush(GetPlayerColor(player));
+                        var brush = new SolidBrush(PlayerSettings.GetPlayerColor(player));
                         g.FillRectangle(brush, hStart, vStart, PreferedSpacer, PreferedSpacer);
                     }
 
                     player = DotsGame.GetHorizontal(i, j);
                     if (player != Player.Invalid)
                     {
-                        Pen pen = new Pen(GetPlayerColor(player));
+                        Pen pen = new Pen(PlayerSettings.GetPlayerColor(player));
                         g.DrawLine(pen, new Point(hStart, vStart), new Point(hStart + PreferedSpacer, vStart));
                     }
 
                     player = DotsGame.GetVertical(i, j);
                     if (player != Player.Invalid)
                     {
-                        Pen pen = new Pen(GetPlayerColor(player));
+                        Pen pen = new Pen(PlayerSettings.GetPlayerColor(player));
                         g.DrawLine(pen, new Point(hStart, vStart), new Point(hStart, vStart + PreferedSpacer));
                     }
                 }
@@ -168,7 +148,7 @@ namespace PenIsland
             if (e.Button != MouseButtons.Left)
                 return;
 
-            if (DotsGame == null || DotsGame.GameOver || Settings.ComputerPlayers[DotsGame.CurrentPlayer])
+            if (DotsGame == null || DotsGame.GameOver || PlayerSettings.GetPlayerController(DotsGame.CurrentPlayer) == PlayerController.Computer)
                 return;
 
             LineInfo clickedLine = new LineInfo();
@@ -259,7 +239,7 @@ namespace PenIsland
             if (DotsGame.GameOver)
                 return;
 
-            if (!Settings.ComputerPlayers[DotsGame.CurrentPlayer])
+            if (PlayerSettings.GetPlayerController(DotsGame.CurrentPlayer) != PlayerController.Computer)
             {
                 return;
             }
