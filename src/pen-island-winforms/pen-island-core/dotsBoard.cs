@@ -18,24 +18,14 @@ namespace PenIsland
 
         Color[] playerColors = new Color[Player.MaxPlayers];
 
-        internal DotsGameSettings Settings { get; }
-
         public DotsBoard()
         {
             InitializeComponent();
-            
-
-            Settings = new DotsGameSettings();
-            Settings.PlayerCount = 2;
-
-            Settings.BoardType = DotsBoardType.Squares;
-            Settings.Height = 5;
-            Settings.Width = 5;
         }
 
         public void NewGame()
         {
-            DotsGame = new DotsGame(Settings.PlayerCount, Settings.Width, Settings.Height);
+            DotsGame = new DotsGame(DotsGameSettings.PlayerCount, DotsGameSettings.BoardType, DotsGameSettings.BoardWidth, DotsGameSettings.BoardHeight);
             
             ClientSize = GetPreferedWindowSize();
             Refresh();

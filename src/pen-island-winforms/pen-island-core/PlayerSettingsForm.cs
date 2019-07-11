@@ -108,7 +108,7 @@ namespace PenIsland
 
                 dotsBoard.Refresh();
 
-                Properties.Settings.Default.Save(); // write out selections to the disk
+                PlayerSettings.Save(); // write out selections to the disk
             }
         }
 

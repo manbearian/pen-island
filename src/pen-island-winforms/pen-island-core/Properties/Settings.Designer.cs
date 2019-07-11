@@ -26,216 +26,264 @@ namespace PenIsland.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Red")]
-        public global::System.Drawing.Color ColorPlayer1 {
+        public global::System.Drawing.Color Player_Color1 {
             get {
-                return ((global::System.Drawing.Color)(this["ColorPlayer1"]));
+                return ((global::System.Drawing.Color)(this["Player_Color1"]));
             }
             set {
-                this["ColorPlayer1"] = value;
+                this["Player_Color1"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
-        public global::System.Drawing.Color ColorPlayer2 {
+        public global::System.Drawing.Color Player_Color2 {
             get {
-                return ((global::System.Drawing.Color)(this["ColorPlayer2"]));
+                return ((global::System.Drawing.Color)(this["Player_Color2"]));
             }
             set {
-                this["ColorPlayer2"] = value;
+                this["Player_Color2"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Green")]
-        public global::System.Drawing.Color ColorPlayer3 {
+        public global::System.Drawing.Color Player_Color3 {
             get {
-                return ((global::System.Drawing.Color)(this["ColorPlayer3"]));
+                return ((global::System.Drawing.Color)(this["Player_Color3"]));
             }
             set {
-                this["ColorPlayer3"] = value;
+                this["Player_Color3"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Purple")]
-        public global::System.Drawing.Color ColorPlayer4 {
+        public global::System.Drawing.Color Player_Color4 {
             get {
-                return ((global::System.Drawing.Color)(this["ColorPlayer4"]));
+                return ((global::System.Drawing.Color)(this["Player_Color4"]));
             }
             set {
-                this["ColorPlayer4"] = value;
+                this["Player_Color4"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Orange")]
-        public global::System.Drawing.Color ColorPlayer5 {
+        public global::System.Drawing.Color Player_Color5 {
             get {
-                return ((global::System.Drawing.Color)(this["ColorPlayer5"]));
+                return ((global::System.Drawing.Color)(this["Player_Color5"]));
             }
             set {
-                this["ColorPlayer5"] = value;
+                this["Player_Color5"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Silver")]
-        public global::System.Drawing.Color ColorPlayer6 {
+        public global::System.Drawing.Color Player_Color6 {
             get {
-                return ((global::System.Drawing.Color)(this["ColorPlayer6"]));
+                return ((global::System.Drawing.Color)(this["Player_Color6"]));
             }
             set {
-                this["ColorPlayer6"] = value;
+                this["Player_Color6"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Pink")]
-        public global::System.Drawing.Color ColorPlayer7 {
+        public global::System.Drawing.Color Player_Color7 {
             get {
-                return ((global::System.Drawing.Color)(this["ColorPlayer7"]));
+                return ((global::System.Drawing.Color)(this["Player_Color7"]));
             }
             set {
-                this["ColorPlayer7"] = value;
+                this["Player_Color7"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Olive")]
-        public global::System.Drawing.Color ColorPlayer8 {
+        public global::System.Drawing.Color Player_Color8 {
             get {
-                return ((global::System.Drawing.Color)(this["ColorPlayer8"]));
+                return ((global::System.Drawing.Color)(this["Player_Color8"]));
             }
             set {
-                this["ColorPlayer8"] = value;
+                this["Player_Color8"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Navy")]
-        public global::System.Drawing.Color ColorPlayer9 {
+        public global::System.Drawing.Color Player_Color9 {
             get {
-                return ((global::System.Drawing.Color)(this["ColorPlayer9"]));
+                return ((global::System.Drawing.Color)(this["Player_Color9"]));
             }
             set {
-                this["ColorPlayer9"] = value;
+                this["Player_Color9"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ControllerPlayer1 {
+        public int Player_Controller1 {
             get {
-                return ((int)(this["ControllerPlayer1"]));
+                return ((int)(this["Player_Controller1"]));
             }
             set {
-                this["ControllerPlayer1"] = value;
+                this["Player_Controller1"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ControllerPlayer2 {
+        public int Player_Controller2 {
             get {
-                return ((int)(this["ControllerPlayer2"]));
+                return ((int)(this["Player_Controller2"]));
             }
             set {
-                this["ControllerPlayer2"] = value;
+                this["Player_Controller2"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ControllerPlayer3 {
+        public int Player_Controller3 {
             get {
-                return ((int)(this["ControllerPlayer3"]));
+                return ((int)(this["Player_Controller3"]));
             }
             set {
-                this["ControllerPlayer3"] = value;
+                this["Player_Controller3"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ControllerPlayer4 {
+        public int Player_Controller4 {
             get {
-                return ((int)(this["ControllerPlayer4"]));
+                return ((int)(this["Player_Controller4"]));
             }
             set {
-                this["ControllerPlayer4"] = value;
+                this["Player_Controller4"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ControllerPlayer5 {
+        public int Player_Controller5 {
             get {
-                return ((int)(this["ControllerPlayer5"]));
+                return ((int)(this["Player_Controller5"]));
             }
             set {
-                this["ControllerPlayer5"] = value;
+                this["Player_Controller5"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ControllerPlayer6 {
+        public int Player_Controller6 {
             get {
-                return ((int)(this["ControllerPlayer6"]));
+                return ((int)(this["Player_Controller6"]));
             }
             set {
-                this["ControllerPlayer6"] = value;
+                this["Player_Controller6"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ControllerPlayer7 {
+        public int Player_Controller7 {
             get {
-                return ((int)(this["ControllerPlayer7"]));
+                return ((int)(this["Player_Controller7"]));
             }
             set {
-                this["ControllerPlayer7"] = value;
+                this["Player_Controller7"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ControllerPlayer8 {
+        public int Player_Controller8 {
             get {
-                return ((int)(this["ControllerPlayer8"]));
+                return ((int)(this["Player_Controller8"]));
             }
             set {
-                this["ControllerPlayer8"] = value;
+                this["Player_Controller8"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ControllerPlayer9 {
+        public int Player_Controller9 {
             get {
-                return ((int)(this["ControllerPlayer9"]));
+                return ((int)(this["Player_Controller9"]));
             }
             set {
-                this["ControllerPlayer9"] = value;
+                this["Player_Controller9"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int Dots_PlayerCount {
+            get {
+                return ((int)(this["Dots_PlayerCount"]));
+            }
+            set {
+                this["Dots_PlayerCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int Dots_BoardWidth {
+            get {
+                return ((int)(this["Dots_BoardWidth"]));
+            }
+            set {
+                this["Dots_BoardWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int Dots_BoardHeight {
+            get {
+                return ((int)(this["Dots_BoardHeight"]));
+            }
+            set {
+                this["Dots_BoardHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\"squares\"")]
+        public string Dots_BoardType {
+            get {
+                return ((string)(this["Dots_BoardType"]));
+            }
+            set {
+                this["Dots_BoardType"] = value;
             }
         }
     }

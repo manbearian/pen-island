@@ -29,26 +29,26 @@ namespace PenIsland
 
     class DotsGame
     {
-        public DotsGame(int playerCount, int boardSizeX, int boardSizeY)
+        public DotsGame(int playerCount, DotsBoardType dotsBoardType, int boardWidth, int boardHeight)
         {
             PlayerCount = playerCount;
             CurrentPlayer = 0;
 
-            Width = boardSizeX;
-            Height = boardSizeY;
+            Width = boardWidth;
+            Height = boardHeight;
 
-            hLines = new int[boardSizeX - 1, boardSizeY];
-            vLines = new int[boardSizeX, boardSizeY - 1];
-            squares = new int[boardSizeX - 1, boardSizeY - 1];
+            hLines = new int[boardWidth - 1, boardHeight];
+            vLines = new int[boardWidth, boardHeight - 1];
+            squares = new int[boardWidth - 1, boardHeight - 1];
 
             scores = new int[playerCount];
 
-            for (int i = 0; i < boardSizeX; ++i)
+            for (int i = 0; i < boardWidth; ++i)
             {
-                for (int j = 0; j < boardSizeY; ++j)
+                for (int j = 0; j < boardHeight; ++j)
                 {
-                    bool c = i < (boardSizeX - 1);
-                    bool d = j < (boardSizeY - 1);
+                    bool c = i < (boardWidth - 1);
+                    bool d = j < (boardHeight - 1);
                     if (c)
                     {
                         hLines[i, j] = Player.Invalid;
@@ -138,7 +138,6 @@ namespace PenIsland
                 default:
                     throw new Exception("unexpected line type");
             }
-
         }
 
         void RecordHorizontal(int col, int row)

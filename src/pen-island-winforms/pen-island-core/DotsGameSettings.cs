@@ -11,52 +11,59 @@ namespace PenIsland
         Squares = 0, Triangles
     }
 
-    class DotsGameSettings
+    static class DotsGameSettings
     {
-        int playerCount_ = 2;
-
-        public DotsGameSettings() { }
-
-        public int PlayerCount
+        public static void Save()
         {
-            get { return playerCount_; }
-            set {
-                if (value < 2)
-                    throw new Exception("too few players");
-                if (value > Player.MaxPlayers)
-                    throw new Exception("too many players");
-                playerCount_ = value;
-            }
+            Properties.Settings.Default.Save();
         }
 
-        public DotsBoardType BoardType { get; set; }
-
-        int width_ = 5;
-        int height_ = 5;
-
-        public int Width {
-            get { return width_; }
-            set
-            {
-                if (value < 2)
-                    throw new Exception("too small board");
-                if (value > 99)
-                    throw new Exception("too large board");
-                width_ = value;
-            }
+        public static int PlayerCount
+        {
+            get { var v = Properties.Settings.Default.Dots_PlayerCount; ValidatePlayerCount(v); return v; }
+            set { ValidatePlayerCount(value); Properties.Settings.Default.Dots_PlayerCount = value; }
         }
 
-        public int Height
+        static void ValidatePlayerCount(int playerCount)
         {
-            get { return height_; }
-            set
-            {
-                if (value < 2)
-                    throw new Exception("too small board");
-                if (value > 99)
-                    throw new Exception("too large board");
-                height_ = value;
-            }
+            if (playerCount < 2)
+                throw new Exception("too few players");
+            if (playerCount > Player.MaxPlayers)
+                throw new Exception("too many players");
+        }
+
+        public static DotsBoardType BoardType
+        {
+            get { Enum.TryParse<DotsBoardType>(Properties.Settings.Default.Dots_BoardType, out DotsBoardType v); return v; }
+            set { Properties.Settings.Default.Dots_BoardType = value.ToString(); }
+        }
+
+        public static int BoardWidth
+        {
+            get { var v = Properties.Settings.Default.Dots_BoardWidth; ValidateBoardWidth(v); return v; }
+            set { ValidateBoardWidth(value); Properties.Settings.Default.Dots_BoardWidth = value; }
+        }
+
+        public static int BoardHeight
+        {
+            get { var v = Properties.Settings.Default.Dots_BoardHeight; ValidateBoardHeight(v); return v; }
+            set { ValidateBoardHeight(value); Properties.Settings.Default.Dots_BoardHeight = value; }
+        }
+
+        static void ValidateBoardWidth(int value)
+        {
+            if (value < 2)
+                throw new Exception("too small board");
+            if (value > 99)
+                throw new Exception("too large board");
+        }
+
+        static void ValidateBoardHeight(int value)
+        {
+            if (value < 2)
+                throw new Exception("too small board");
+            if (value > 99)
+                throw new Exception("too large board");
         }
 
     }

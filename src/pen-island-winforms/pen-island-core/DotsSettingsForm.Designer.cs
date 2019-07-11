@@ -208,6 +208,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "New Dots Game...";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.DotsSettingsForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

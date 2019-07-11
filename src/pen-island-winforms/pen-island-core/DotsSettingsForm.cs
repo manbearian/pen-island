@@ -12,26 +12,22 @@ namespace PenIsland
 {
     public partial class DotsSettingsForm : Form
     {
-        private DotsBoard dotsBoard;
-
         public DotsSettingsForm()
         {
             InitializeComponent();
         }
 
-        public void ShowDialog(DotsBoard dotsBoard)
+        private void DotsSettingsForm_Load(object sender, EventArgs e)
         {
-            this.dotsBoard = dotsBoard;
+            playerCountBox.SelectedIndex = DotsGameSettings.PlayerCount - 2;
 
-            playerCountBox.SelectedIndex = dotsBoard.Settings.PlayerCount - 2;
-            
             // assume boardTypeBox and BoardType enum are in sync
-            boardTypeBox.SelectedIndex = (int)dotsBoard.Settings.BoardType;
+            boardTypeBox.SelectedIndex = (int)DotsGameSettings.BoardType;
 
-            heightTextBox.Text = dotsBoard.Settings.Height.ToString();
-            widthTextBox.Text = dotsBoard.Settings.Width.ToString();
+            heightTextBox.Text = DotsGameSettings.BoardHeight.ToString();
+            widthTextBox.Text = DotsGameSettings.BoardWidth.ToString();
 
-            switch (dotsBoard.Settings.BoardType)
+            switch (DotsGameSettings.BoardType)
             {
                 case DotsBoardType.Squares:
                     heightTextBox.Enabled = true;
@@ -42,28 +38,27 @@ namespace PenIsland
                     widthTextBox.Enabled = false;
                     break;
             }
-
-            base.ShowDialog();
         }
 
         private void acceptButton_Click(object sender, EventArgs e)
         {
             // player settings
-            dotsBoard.Settings.PlayerCount = int.Parse((string)playerCountBox.SelectedItem);
+            DotsGameSettings.PlayerCount = int.Parse((string)playerCountBox.SelectedItem);
 
             // board settings
-            dotsBoard.Settings.BoardType = (DotsBoardType)boardTypeBox.SelectedIndex; // assume boardTypeBox and BoardType enum are in sync
-
-            int val;
-            if (int.TryParse(heightTextBox.Text, out val))
+            DotsGameSettings.BoardType = (DotsBoardType)boardTypeBox.SelectedIndex; // assume boardTypeBox and BoardType enum are in sync
+            
+            if (int.TryParse(widthTextBox.Text, out int width))
             {
-                dotsBoard.Settings.Height = val;
+                DotsGameSettings.BoardWidth = width;
             }
 
-            if (int.TryParse(widthTextBox.Text, out val))
+            if (int.TryParse(heightTextBox.Text, out int height))
             {
-                dotsBoard.Settings.Width = val;
+                DotsGameSettings.BoardHeight = height;
             }
+
+            DotsGameSettings.Save(); // write out selections to the disk
         }
 
     }

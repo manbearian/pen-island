@@ -26,10 +26,10 @@ namespace PenIsland
             Refresh();
         }
 
-        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+        private void newDotsGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DotsSettingsForm gs = new DotsSettingsForm();
-            gs.ShowDialog(dotsBoard);
+            gs.ShowDialog();
 
             if (gs.DialogResult == DialogResult.OK)
             {
@@ -98,6 +98,7 @@ namespace PenIsland
                 }
             }
         }
+
     }
 
 }
