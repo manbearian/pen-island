@@ -15,13 +15,37 @@ namespace PenIsland
         public MainForm()
         {
             InitializeComponent();
-            UpdateSize();
         }
 
-        private void UpdateSize()
+        enum GameKind
         {
-            var width = dotsBoard.ClientSize.Width;
-            var height = dotsBoard.ClientSize.Height + 50;
+            Dots, TicTacToe
+        }
+
+        void NewGame(GameKind gameKind)
+        {
+            UserControl gameBoard;
+
+            switch (gameKind)
+            {
+                case GameKind.Dots:
+                    gameBoard = dotsBoard;
+                    dotsBoard.NewGame();
+                    break;
+                case GameKind.TicTacToe:
+                    gameBoard = tttBoard;
+                    tttBoard.NewGame();
+                    break;
+                default:
+                    throw new Exception("bad game type");
+            }
+
+            dotsBoard.Visible = false;
+            tttBoard.Visible = false;
+            gameBoard.Visible = true;
+
+            var width = gameBoard.ClientSize.Width;
+            var height = gameBoard.ClientSize.Height + 50;
             ClientSize = new Size(width, height);
             Refresh();
         }
@@ -33,8 +57,18 @@ namespace PenIsland
 
             if (gs.DialogResult == DialogResult.OK)
             {
-                dotsBoard.NewGame();
-                UpdateSize();
+                NewGame(GameKind.Dots);
+            }
+        }
+
+        private void newTicTacToeGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TttSettingsForm gs = new TttSettingsForm();
+            gs.ShowDialog();
+
+            if (gs.DialogResult == DialogResult.OK)
+            {
+                NewGame(GameKind.TicTacToe);
             }
         }
 

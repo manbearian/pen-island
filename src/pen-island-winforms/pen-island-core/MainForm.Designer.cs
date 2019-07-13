@@ -31,9 +31,10 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.playerColorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTicTacToeGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playerColorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dotsBoard = new PenIsland.DotsBoard();
+            this.tttBoard = new PenIsland.TttBoard();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,13 +66,6 @@
             this.newGameToolStripMenuItem.Text = "New Dots Game...";
             this.newGameToolStripMenuItem.Click += new System.EventHandler(this.newDotsGameToolStripMenuItem_Click);
             // 
-            // playerColorsToolStripMenuItem
-            // 
-            this.playerColorsToolStripMenuItem.Name = "playerColorsToolStripMenuItem";
-            this.playerColorsToolStripMenuItem.Size = new System.Drawing.Size(285, 30);
-            this.playerColorsToolStripMenuItem.Text = "Player Settings...";
-            this.playerColorsToolStripMenuItem.Click += new System.EventHandler(this.playerColorsToolStripMenuItem_Click);
-            // 
             // newTicTacToeGameToolStripMenuItem
             // 
             this.newTicTacToeGameToolStripMenuItem.Name = "newTicTacToeGameToolStripMenuItem";
@@ -79,12 +73,28 @@
             this.newTicTacToeGameToolStripMenuItem.Text = "New Tic-Tac-Toe Game...";
             this.newTicTacToeGameToolStripMenuItem.Click += new System.EventHandler(this.newTicTacToeGameToolStripMenuItem_Click);
             // 
+            // playerColorsToolStripMenuItem
+            // 
+            this.playerColorsToolStripMenuItem.Name = "playerColorsToolStripMenuItem";
+            this.playerColorsToolStripMenuItem.Size = new System.Drawing.Size(285, 30);
+            this.playerColorsToolStripMenuItem.Text = "Player Settings...";
+            this.playerColorsToolStripMenuItem.Click += new System.EventHandler(this.playerColorsToolStripMenuItem_Click);
+            // 
             // dotsBoard
             // 
             this.dotsBoard.Location = new System.Drawing.Point(0, 40);
             this.dotsBoard.Name = "dotsBoard";
             this.dotsBoard.Size = new System.Drawing.Size(458, 468);
             this.dotsBoard.TabIndex = 1;
+            this.dotsBoard.Visible = false;
+            // 
+            // tttBoard
+            // 
+            this.tttBoard.Location = new System.Drawing.Point(0, 40);
+            this.tttBoard.Name = "tttBoard";
+            this.tttBoard.Size = new System.Drawing.Size(468, 473);
+            this.tttBoard.TabIndex = 2;
+            this.tttBoard.Visible = false;
             // 
             // MainForm
             // 
@@ -92,6 +102,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(464, 511);
+            this.Controls.Add(this.tttBoard);
             this.Controls.Add(this.dotsBoard);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -115,6 +126,7 @@
         private DotsBoard dotsBoard;
         private System.Windows.Forms.ToolStripMenuItem playerColorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newTicTacToeGameToolStripMenuItem;
+        private TttBoard tttBoard;
     }
 }
 
