@@ -85,6 +85,7 @@
     <Compile Include="TttBoard.Designer.cs">
       <DependentUpon>TttBoard.cs</DependentUpon>
     </Compile>
+    <Compile Include="TttGame.cs" />
     <Compile Include="TttSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
