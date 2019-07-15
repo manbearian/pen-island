@@ -8,7 +8,8 @@ namespace PenIsland
 {
     class Player
     {
-        public static int Invalid = -1;
-        public static int MaxPlayers = 9;
+        public static readonly int Invalid = -1;
+        public static readonly int FirstPlayer = 0;
+        public static readonly int MaxPlayers = 9;
     }
 }

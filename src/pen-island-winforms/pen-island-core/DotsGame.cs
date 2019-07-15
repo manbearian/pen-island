@@ -32,7 +32,7 @@ namespace PenIsland
         public DotsGame(int playerCount, DotsBoardType dotsBoardType, int boardWidth, int boardHeight)
         {
             PlayerCount = playerCount;
-            CurrentPlayer = 0;
+            CurrentPlayer = Player.FirstPlayer;
 
             Width = boardWidth;
             Height = boardHeight;
