@@ -17,7 +17,7 @@ namespace PenIsland
         public bool GameOver { get; private set; }
         public int Winner { get; private set; }
 
-        int[,] recordedMoves;
+        private readonly int[,] recordedMoves;
 
         public TttGame(int playerCount, int boardWidth, int boardHeight)
         {

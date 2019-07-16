@@ -30,12 +30,14 @@
         {
             this.SuspendLayout();
             // 
-            // TTTBoard
+            // TttBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "TTTBoard";
+            this.Name = "TttBoard";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.TTTBoard_Paint);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TttBoard_MouseClick);
+            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TttBoard_MouseDoubleClick);
             this.ResumeLayout(false);
 
         }
