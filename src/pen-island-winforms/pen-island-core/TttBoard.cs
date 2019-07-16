@@ -14,7 +14,7 @@ namespace PenIsland
     {
         internal TttGame TttGame { get; private set; }
 
-        Nullable<Point> selectedPoint;
+        Point? selectedPoint;
 
         public TttBoard()
         {
@@ -114,6 +114,18 @@ namespace PenIsland
             {
                 DrawMove(g, selectedPoint.Value, Player.Invalid);
             }
+
+            for (int i = 0; i < TttGame.Width; ++i)
+            {
+                for (int j = 0; j < TttGame.Height; ++j)
+                {
+                    int checkPlayer = TttGame.GetMove(i, j);
+                    if (checkPlayer != Player.Invalid)
+                    {
+                        DrawMove(g, new Point(i, j), checkPlayer);
+                    }
+                }
+            }
         }
 
         private void TttBoard_MouseClick(object sender, MouseEventArgs e)
@@ -134,7 +146,7 @@ namespace PenIsland
             if (TttGame == null || TttGame.GameOver || PlayerSettings.GetPlayerController(TttGame.CurrentPlayer) == PlayerController.Computer)
                 return;
 
-            Point clickedPoint = new Point(0, 0);
+            Point clickedPoint = new Point(-1, -1);
 
             int x = PreferedBorder;
             for (int i = 0; i < TttGame.Width; ++i, x += PreferedGrid)
@@ -156,9 +168,34 @@ namespace PenIsland
                 }
             }
 
-            selectedPoint = clickedPoint;
+            if (clickedPoint.X >= 0 && clickedPoint.Y >= 0)
+            {
+                if (TttGame.GetMove(clickedPoint.X, clickedPoint.Y) != Player.Invalid)
+                {
+                    clickedPoint = new Point(-1, -1);
+                }
+            }
+
+            if (clickedPoint.X >= 0 && clickedPoint.Y >= 0)
+            {
+                if ((selectedPoint != null && clickedPoint == selectedPoint) || e.Clicks > 1)
+                {
+                    TttGame.RecordMove(clickedPoint.X, clickedPoint.Y);
+                    selectedPoint = null;
+                }
+                else
+                {
+                    selectedPoint = clickedPoint;
+                }
+            }
+            else
+            {
+                selectedPoint = null;
+            }
 
             Parent.Refresh();
+
+            RunComputerPlayers();
         }
 
         void RunComputerPlayers()

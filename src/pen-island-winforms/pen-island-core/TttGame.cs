@@ -19,6 +19,7 @@ namespace PenIsland
 
         private readonly int[,] recordedMoves;
 
+
         public TttGame(int playerCount, int boardWidth, int boardHeight)
         {
             PlayerCount = playerCount;
@@ -28,6 +29,14 @@ namespace PenIsland
             Height = boardHeight;
 
             recordedMoves = new int[Width, Height];
+
+            for (int i = 0; i < boardWidth; ++i)
+            {
+                for (int j = 0; j < boardHeight; ++j)
+                {
+                    recordedMoves[i, j] = Player.Invalid;
+                }
+            }
         }
 
         public int GetMove(int x, int y)
@@ -35,11 +44,9 @@ namespace PenIsland
             return recordedMoves[x, y];
         }
 
-        public void RecordMove(int x, int y, int player)
+        public void RecordMove(int x, int y)
         {
-            System.Diagnostics.Debug.Assert(player >= Player.FirstPlayer && player < PlayerCount);
-
-            recordedMoves[x, y] = player;
+            recordedMoves[x, y] = CurrentPlayer;
 
             // check for game over
             bool winner = false;
@@ -48,10 +55,10 @@ namespace PenIsland
             winner = true;
             for (int i = 0; i < Width; ++i)
             {
-                var check = GetMove(i, y);
-                if (check != player)
+                var checkPlayer = GetMove(i, y);
+                if (checkPlayer != CurrentPlayer)
                 {
-                    possibleCatsGame = (check != Player.Invalid);
+                    possibleCatsGame = (checkPlayer != Player.Invalid);
                     winner = false;
                     break;
                 }
@@ -59,29 +66,33 @@ namespace PenIsland
 
             if (winner)
             {
-                EndGame(player);
+                EndGame();
             }
 
             winner = true;
             for (int j = 0; j < Height; ++j)
             {
-                var check = GetMove(x, y);
-                if (check != player)
+                var checkPlayer = GetMove(x, j);
+                if (checkPlayer != CurrentPlayer)
                 {
-                    possibleCatsGame = (check != Player.Invalid);
+                    possibleCatsGame = (checkPlayer != Player.Invalid);
                     winner = false;
                     break;
                 }
             }
 
+            int[] plays = new int[3];
+            for (int i = )
+
             if (winner)
             {
-                EndGame(player);
+                EndGame();
             }
 
             if (possibleCatsGame && CheckCatsGame())
             {
-                EndGame(Player.Invalid);
+                CurrentPlayer = Player.Invalid;
+                EndGame();
             }
 
             EndTurn();
@@ -161,9 +172,9 @@ namespace PenIsland
             }
         }
 
-        void EndGame(int winner)
+        void EndGame()
         {
-            Winner = winner;
+            Winner = CurrentPlayer;
             CurrentPlayer = Player.Invalid;
             GameOver = true;
         }
