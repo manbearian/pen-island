@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace PenIsland
 {
-    public partial class DotsBoard : UserControl
+    public partial class DotsBoard : UserControl, GameBoard
     {
         LineInfo selectedLine = LineInfo.Invalid;
 
@@ -33,15 +33,15 @@ namespace PenIsland
             RunComputerPlayers();
         }
 
-        static readonly int PreferedDotSize = 5;
-        static readonly int PreferedSpacer = 40;
-        static readonly int PreferedBorder = PreferedSpacer / 2;
-
         // default size:
         //   |<-- 20 pixels --> x <-- 40 pixels --> x ... x <-- 25 pixels ->|
         //   spacing is same horizontal and vertical
         //   "x" is 5x5 pixel dot
         // total length is countof(x) * 40 + 5
+
+        static readonly int PreferedDotSize = 5;
+        static readonly int PreferedSpacer = 40;
+        static readonly int PreferedBorder = PreferedSpacer / 2;
 
         public Size GetPreferedWindowSize()
         {
@@ -239,6 +239,59 @@ namespace PenIsland
             Parent.Refresh();
 
             RunComputerPlayers();
+        }
+
+        public void GetStatusMessage(out string message, out Color color)
+        {
+            message = "";
+            color = Color.Black;
+
+            if (DotsGame == null) {
+                return; 
+            }
+            
+            if (!DotsGame.GameOver)
+            {
+                var player = DotsGame.CurrentPlayer;
+                color = PlayerSettings.GetPlayerColor(player);
+                message = string.Format("Player {0}", player + 1);
+            }
+            else
+            {
+                var score = DotsGame.ScoreBoard;
+                List<int> winners = new List<int>();
+                int topScore = 0;
+                for (int i = 0; i < DotsGame.PlayerCount; ++i)
+                {
+                    if (score[i] > topScore)
+                    {
+                        winners.Clear();
+                        winners.Add(i);
+                        topScore = score[i];
+                    }
+                    else if (score[i] == topScore)
+                    {
+                        winners.Add(i);
+                    }
+                }
+
+                if (winners.Count == DotsGame.PlayerCount)
+                {
+                    // tie game (no winner)
+                    message = string.Format("Game Over, It's a Draw!");
+                }
+                else if (winners.Count > 1)
+                {
+                    // tie game (multiple winners)
+                    message = string.Format("Game Over, Multi-winner!");
+                }
+                else
+                {
+                    var winner = winners[0];
+                    color = PlayerSettings.GetPlayerColor(winner);
+                    message = string.Format("Game Over, Player {0} Wins!", winner + 1);
+                }
+            }
         }
     }
 }

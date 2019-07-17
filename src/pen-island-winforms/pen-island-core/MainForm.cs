@@ -19,34 +19,44 @@ namespace PenIsland
 
         enum GameKind
         {
-            Dots, TicTacToe
+            Invalid, Dots, TicTacToe
+        }
+
+        GameKind gameKind = GameKind.Invalid;
+
+        GameBoard GameBoard
+        {
+            get
+            {
+                switch (gameKind)
+                {
+                    case GameKind.Dots: return dotsBoard;
+                    case GameKind.TicTacToe: return tttBoard;
+                    default: return null;
+                }
+            }
+
         }
 
         void NewGame(GameKind gameKind)
         {
-            UserControl gameBoard;
+            this.gameKind = gameKind;
 
-            switch (gameKind)
-            {
-                case GameKind.Dots:
-                    gameBoard = dotsBoard;
-                    dotsBoard.NewGame();
-                    break;
-                case GameKind.TicTacToe:
-                    gameBoard = tttBoard;
-                    tttBoard.NewGame();
-                    break;
-                default:
-                    throw new Exception("bad game type");
-            }
+            GameBoard gameBoard = GameBoard;
+
+            gameBoard.NewGame();
 
             dotsBoard.Visible = false;
             tttBoard.Visible = false;
-            gameBoard.Visible = true;
 
-            var width = gameBoard.ClientSize.Width;
-            var height = gameBoard.ClientSize.Height + 50;
+            UserControl gameBoardControl = GameBoard as UserControl;
+
+            gameBoardControl.Visible = true;
+
+            var width = gameBoardControl.ClientSize.Width;
+            var height = gameBoardControl.Height + 50;
             ClientSize = new Size(width, height);
+
             Refresh();
         }
 
@@ -81,55 +91,13 @@ namespace PenIsland
         private void MainForm_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
-            var game = dotsBoard.DotsGame;
+            var gameBoard = GameBoard;
+            var gameBoardControl = gameBoard as UserControl;
 
-            if (game != null)
+            if (gameBoard != null)
             {
-                if (!game.GameOver)
-                {
-                    var player = game.CurrentPlayer;
-                    var color = PlayerSettings.GetPlayerColor(player);
-                    g.DrawString(String.Format("Player {0}", player + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
-                }
-                else
-                {
-                    var score = game.ScoreBoard;
-                    List<int> winners = new List<int>();
-                    int topScore = 0;
-                    for (int i = 0; i < game.PlayerCount; ++i)
-                    {
-                        if (score[i] > topScore)
-                        {
-                            winners.Clear();
-                            winners.Add(i);
-                            topScore = score[i];
-                        }
-                        else if (score[i] == topScore)
-                        {
-                            winners.Add(i);
-                        }
-                    }
-
-                    if (winners.Count == game.PlayerCount)
-                    {
-                        // tie game
-                        var color = Color.Black;
-                        g.DrawString(string.Format("Game Over, It's a Draw!"), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
-
-                    }
-                    else if (winners.Count > 1)
-                    {
-                        // tie game
-                        var color = Color.Black;
-                        g.DrawString(string.Format("Game Over, Multi-winner!"), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
-                    }
-                    else
-                    {
-                        var winner = winners[0];
-                        var color = PlayerSettings.GetPlayerColor(winner);
-                        g.DrawString(string.Format("Game Over, Player {0} Wins!", winner + 1), SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, dotsBoard.ClientSize.Height + 30));
-                    }
-                }
+                gameBoard.GetStatusMessage(out string message, out Color color);
+                g.DrawString(message, SystemFonts.DefaultFont, new SolidBrush(color), new Point(0, gameBoardControl.ClientSize.Height + 30));
             }
         }
 

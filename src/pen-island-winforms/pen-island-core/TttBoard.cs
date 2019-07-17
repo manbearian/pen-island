@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace PenIsland
 {
-    public partial class TttBoard : UserControl
+    public partial class TttBoard : UserControl, GameBoard
     {
         internal TttGame TttGame { get; private set; }
 
@@ -32,6 +32,21 @@ namespace PenIsland
             RunComputerPlayers();
         }
 
+        enum PlayerGlyph
+        {
+            X, O 
+        }
+
+        PlayerGlyph GetPlayerGlyph(int player)
+        {
+            switch(player)
+            {
+                case 0: return PlayerGlyph.X;
+                case 1: return PlayerGlyph.O;
+                default: throw new Exception("unknown player");
+            }
+        }
+
         // default size:
         //   <-- 25 pixels --> <-- 50 pixels --> | <-- 50 pixels --> | <-- 50 pixels --> <-- 25 pixels -->
         //   spacing is same horizontal and vertical
@@ -40,42 +55,29 @@ namespace PenIsland
         static readonly int PreferedBorder = PreferedGrid / 2;
         static readonly int PreferedSpacer = 5; // spacer between glyph and grid
 
-
         public Size GetPreferedWindowSize()
         {
             //return new Size(DotsGame.Width * PreferedSpacer + PreferedDotSize, DotsGame.Height * PreferedSpacer + PreferedDotSize);
             return new Size((PreferedGrid * TttGame.Width) + PreferedBorder * 2, (PreferedGrid * TttGame.Height) + PreferedBorder * 2);
         }
 
-        private void DrawMove(Graphics g, Point location, int player)
+        private void DrawMove(Graphics g, Point location, PlayerGlyph glyph, Color color)
         {
             int x = PreferedBorder + PreferedGrid * location.X;
             int y = PreferedBorder + PreferedGrid * location.Y;
 
-            Pen pen;
-            if (player == Player.Invalid)
-            {
-                // drawing selection
-                player = TttGame.CurrentPlayer;
-                pen = Pens.Aquamarine;
-            }
-            else
-            {
-                pen = new Pen(PlayerSettings.GetPlayerColor(player));
-            }
+            Pen pen = new Pen(color);
 
-            switch (player)
+            switch (glyph)
             {
-                case 0:
-                    // draw an X
+                case PlayerGlyph.X:
                     g.DrawLine(pen, new Point(x + PreferedSpacer, y + PreferedSpacer),
                         new Point(x + PreferedGrid - PreferedSpacer, y + PreferedGrid - PreferedSpacer));
                     g.DrawLine(pen, new Point(x + PreferedGrid - PreferedSpacer, y + PreferedSpacer),
                         new Point(x + PreferedSpacer, y + PreferedGrid - PreferedSpacer));
                     break;
 
-                case 1:
-                    // draw an O
+                case PlayerGlyph.O:
                     g.DrawEllipse(pen, x + PreferedSpacer, y + PreferedSpacer, PreferedGrid - 2 * PreferedSpacer, PreferedGrid - 2 * PreferedSpacer);
                     break;
 
@@ -112,7 +114,7 @@ namespace PenIsland
 
             if (selectedPoint != null)
             {
-                DrawMove(g, selectedPoint.Value, Player.Invalid);
+                DrawMove(g, selectedPoint.Value, GetPlayerGlyph(TttGame.CurrentPlayer), Color.Aquamarine);
             }
 
             for (int i = 0; i < TttGame.Width; ++i)
@@ -122,7 +124,7 @@ namespace PenIsland
                     int checkPlayer = TttGame.GetMove(i, j);
                     if (checkPlayer != Player.Invalid)
                     {
-                        DrawMove(g, new Point(i, j), checkPlayer);
+                        DrawMove(g, new Point(i, j), GetPlayerGlyph(checkPlayer), PlayerSettings.GetPlayerColor(checkPlayer));
                     }
                 }
             }
@@ -203,5 +205,36 @@ namespace PenIsland
 
         }
 
-    }
+        public void GetStatusMessage(out string message, out Color color)
+        {
+            message = "";
+            color = Color.Black;
+
+            if (TttGame == null)
+            {
+                return;
+            }
+
+            if (!TttGame.GameOver)
+            {
+                var player = TttGame.CurrentPlayer;
+                color = PlayerSettings.GetPlayerColor(player);
+                message = string.Format("{0}'s turn", GetPlayerGlyph(player).ToString());
+            }
+            else
+            {
+                var player = TttGame.Winner;
+                if (player == Player.Invalid)
+                {
+                    message = string.Format("Cat's Game!");
+                }
+                else
+                {
+                    color = PlayerSettings.GetPlayerColor(player);
+                    message = string.Format("{0}'s win!", GetPlayerGlyph(player).ToString());
+                }
+            }
+        }
+
+        }
 }
