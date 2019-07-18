@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Point = System.Drawing.Point;
+
 namespace PenIsland
 {
     class TttGame
@@ -18,9 +20,10 @@ namespace PenIsland
         public int Winner { get; private set; }
 
         private readonly int[,] recordedMoves;
+        private int winningNumber;
+        private readonly List<Point[]> moveStrings;
 
-
-        public TttGame(int playerCount, int boardWidth, int boardHeight)
+        public TttGame(int playerCount, int boardWidth, int boardHeight, int winningNumber)
         {
             PlayerCount = playerCount;
             CurrentPlayer = Player.FirstPlayer;
@@ -29,12 +32,69 @@ namespace PenIsland
             Height = boardHeight;
 
             recordedMoves = new int[Width, Height];
+            this.winningNumber = winningNumber;
 
             for (int i = 0; i < boardWidth; ++i)
             {
                 for (int j = 0; j < boardHeight; ++j)
                 {
                     recordedMoves[i, j] = Player.Invalid;
+                }
+            }
+            
+            moveStrings = new List<Point[]>();
+
+            //
+            // diagram of 4x4 board
+            //
+            // [0,0] [1,0] [2,0] [3,0]
+            // [0,1] [1,1] [2,1] [3,1]
+            // [0,2] [1,2] [2,2] [3,2]
+            // [0,3] [1,1] [2,3] [3,3]
+
+            // record horizontal move-strings
+            for (int i = 0; i < Width; ++i)
+            {
+                for (int j = 0; j < Height - winningNumber + 1; ++j)
+                {
+                    Point[] moveString = new Point[winningNumber];
+                    for (int k = 0; k < winningNumber; ++k)
+                    {
+                        moveString[k] = new Point(i, j + k);
+                    }
+                    moveStrings.Add(moveString);
+                }
+            }
+
+            // record vertical move-strings
+            for (int i = 0; i < Height; ++i)
+            {
+                for (int j = 0; j < Width - winningNumber + 1; ++j)
+                {
+                    Point[] moveString = new Point[winningNumber];
+                    for (int k = 0; k < winningNumber; ++k)
+                    {
+                        moveString[k] = new Point(j + k, i);
+                    }
+                    moveStrings.Add(moveString);
+                }
+            }
+
+            // record diagonal move-strings
+            int limit = Math.Min(Width, Height);
+            for (int i = 0; i < limit - winningNumber + 1; ++i)
+            {
+                for (int j = 0; j < limit - winningNumber + 1; ++j)
+                {
+                    Point[] moveString1 = new Point[winningNumber];
+                    Point[] moveString2 = new Point[winningNumber];
+                    for (int k = 0, l = winningNumber - 1; k < winningNumber; ++k, --l)
+                    {
+                        moveString1[k] = new Point(i + k, j + k);
+                        moveString2[k] = new Point(i + k, j + l);
+                    }
+                    moveStrings.Add(moveString1);
+                    moveStrings.Add(moveString2);
                 }
             }
         }
@@ -48,48 +108,27 @@ namespace PenIsland
         {
             recordedMoves[x, y] = CurrentPlayer;
 
-            // check for game over
-            bool winner = false;
-            bool possibleCatsGame = false;
-
-            winner = true;
-            for (int i = 0; i < Width; ++i)
+            bool pathToVictory = false;
+            foreach (var moveString in moveStrings)
             {
-                var checkPlayer = GetMove(i, y);
-                if (checkPlayer != CurrentPlayer)
+                int[] plays = new int[moveString.Length];
+
+                for (int i = 0; i < moveString.Length; ++i)
                 {
-                    possibleCatsGame = (checkPlayer != Player.Invalid);
-                    winner = false;
-                    break;
+                    plays[i] = GetMove(moveString[i].X, moveString[i].Y);
                 }
-            }
 
-            if (winner)
-            {
-                EndGame();
-            }
-
-            winner = true;
-            for (int j = 0; j < Height; ++j)
-            {
-                var checkPlayer = GetMove(x, j);
-                if (checkPlayer != CurrentPlayer)
+                if (CheckWinner(plays))
                 {
-                    possibleCatsGame = (checkPlayer != Player.Invalid);
-                    winner = false;
-                    break;
+                    System.Diagnostics.Debug.Assert(moveString.Contains(new Point(x, y)), "Game wasn't won by the current move?!?");
+                    EndGame();
+                    return;
                 }
+
+                pathToVictory |= !CheckBlocked(plays);
             }
 
-            int[] plays = new int[3];
-            for (int i = )
-
-            if (winner)
-            {
-                EndGame();
-            }
-
-            if (possibleCatsGame && CheckCatsGame())
+            if (!pathToVictory)
             {
                 CurrentPlayer = Player.Invalid;
                 EndGame();
@@ -98,7 +137,25 @@ namespace PenIsland
             EndTurn();
         }
 
-        bool CheckCatsGame(int [] plays)
+        bool CheckWinner(int [] plays)
+        {
+            System.Diagnostics.Debug.Assert(plays.Length == winningNumber);
+
+            if (plays[0] == Player.Invalid)
+            {
+                return false;
+            }
+
+            for (int i = 1; i < plays.Length; ++i)
+            {
+                if (plays[i] != plays[0])
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool CheckBlocked(int [] plays)
         {
             int seenPlayer = Player.Invalid;
 
@@ -118,51 +175,10 @@ namespace PenIsland
                 }
             }
 
-            // this paht is still open
+            // this path is still open
             return false;
         }
-
-        bool CheckCatsGame()
-        {
-            System.Diagnostics.Debug.Assert(Width == Height, "NYI: non-square boards!");
-            
-            for (int i = 0; i < Width; ++i)
-            {
-                int[] hPlays = new int[Height];
-                int[] vPlays = new int[Height];
-
-                for (int j = 0; j < Height; ++j)
-                {
-                    hPlays[i] = GetMove(i, j);
-                    vPlays[i] = GetMove(j, i);
-                }
-
-                // there's still a way someone can win
-                if (!CheckCatsGame(hPlays))
-                    return false;
-                if (!CheckCatsGame(vPlays))
-                    return false;
-            }
-
-            int[] x1Plays = new int[Height];
-            int[] x2Plays = new int[Height];
-
-            for (int i = 0; i < Width; ++i)
-            {
-                x1Plays[i] = GetMove(i, i);
-                x2Plays[i] = GetMove(Width - 1 - i, i);
-            }
-
-            if (!CheckCatsGame(x1Plays))
-                return false;
-            if (!CheckCatsGame(x2Plays))
-                return false;
-
-            // no moves left, cat's game
-            return true;
-        }
-
-
+        
         void EndTurn()
         {
             CurrentPlayer++;
