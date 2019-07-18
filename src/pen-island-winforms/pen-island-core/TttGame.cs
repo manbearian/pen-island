@@ -4,10 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Point = System.Drawing.Point;
-
 namespace PenIsland
 {
+    class MoveInfo
+    {
+        public int X;
+        public int Y;
+
+        public MoveInfo(int x, int y) { X = x; Y = y; }
+    }
+
     class TttGame
     {
         public int PlayerCount { get; private set; }
@@ -21,7 +27,7 @@ namespace PenIsland
 
         private readonly int[,] recordedMoves;
         private int winningNumber;
-        private readonly List<Point[]> moveStrings;
+        private readonly List<MoveInfo[]> moveStrings;
 
         public TttGame(int playerCount, int boardWidth, int boardHeight, int winningNumber)
         {
@@ -42,7 +48,7 @@ namespace PenIsland
                 }
             }
             
-            moveStrings = new List<Point[]>();
+            moveStrings = new List<MoveInfo[]>();
 
             //
             // diagram of 4x4 board
@@ -57,10 +63,10 @@ namespace PenIsland
             {
                 for (int j = 0; j < Height - winningNumber + 1; ++j)
                 {
-                    Point[] moveString = new Point[winningNumber];
+                    MoveInfo[] moveString = new MoveInfo[winningNumber];
                     for (int k = 0; k < winningNumber; ++k)
                     {
-                        moveString[k] = new Point(i, j + k);
+                        moveString[k] = new MoveInfo(i, j + k);
                     }
                     moveStrings.Add(moveString);
                 }
@@ -71,10 +77,10 @@ namespace PenIsland
             {
                 for (int j = 0; j < Width - winningNumber + 1; ++j)
                 {
-                    Point[] moveString = new Point[winningNumber];
+                    MoveInfo[] moveString = new MoveInfo[winningNumber];
                     for (int k = 0; k < winningNumber; ++k)
                     {
-                        moveString[k] = new Point(j + k, i);
+                        moveString[k] = new MoveInfo(j + k, i);
                     }
                     moveStrings.Add(moveString);
                 }
@@ -86,12 +92,12 @@ namespace PenIsland
             {
                 for (int j = 0; j < limit - winningNumber + 1; ++j)
                 {
-                    Point[] moveString1 = new Point[winningNumber];
-                    Point[] moveString2 = new Point[winningNumber];
+                    MoveInfo[] moveString1 = new MoveInfo[winningNumber];
+                    MoveInfo[] moveString2 = new MoveInfo[winningNumber];
                     for (int k = 0, l = winningNumber - 1; k < winningNumber; ++k, --l)
                     {
-                        moveString1[k] = new Point(i + k, j + k);
-                        moveString2[k] = new Point(i + k, j + l);
+                        moveString1[k] = new MoveInfo(i + k, j + k);
+                        moveString2[k] = new MoveInfo(i + k, j + l);
                     }
                     moveStrings.Add(moveString1);
                     moveStrings.Add(moveString2);
@@ -99,14 +105,14 @@ namespace PenIsland
             }
         }
 
-        public int GetMove(int x, int y)
+        public int GetMove(MoveInfo move)
         {
-            return recordedMoves[x, y];
+            return recordedMoves[move.X, move.Y];
         }
 
-        public void RecordMove(int x, int y)
+        public void RecordMove(MoveInfo move)
         {
-            recordedMoves[x, y] = CurrentPlayer;
+            recordedMoves[move.X, move.Y] = CurrentPlayer;
 
             bool pathToVictory = false;
             foreach (var moveString in moveStrings)
@@ -115,12 +121,12 @@ namespace PenIsland
 
                 for (int i = 0; i < moveString.Length; ++i)
                 {
-                    plays[i] = GetMove(moveString[i].X, moveString[i].Y);
+                    plays[i] = GetMove(moveString[i]);
                 }
 
                 if (CheckWinner(plays))
                 {
-                    System.Diagnostics.Debug.Assert(moveString.Contains(new Point(x, y)), "Game wasn't won by the current move?!?");
+                    System.Diagnostics.Debug.Assert(moveString.Contains(move), "Game wasn't won by the current move?!?");
                     EndGame();
                     return;
                 }
@@ -193,18 +199,6 @@ namespace PenIsland
             Winner = CurrentPlayer;
             CurrentPlayer = Player.Invalid;
             GameOver = true;
-        }
-
-        public void CheckWinnerOrNoWinner()
-        {
-            // check verticals
-            for (int i = 0; i < Width; ++i)
-            {
-                for (int j = 0; j < Height; ++j)
-                {
-                    var player = GetMove(i, j);
-                }
-            }
         }
     }
 }

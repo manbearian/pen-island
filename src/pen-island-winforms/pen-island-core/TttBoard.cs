@@ -24,7 +24,8 @@ namespace PenIsland
         public void NewGame()
         {
             // TttGame = new TttGame(TttGameSettings.PlayerCount, TttGameSettings.BoardWidth, TttGameSettings.BoardHeight);
-            TttGame = new TttGame(2, 3, 3);
+            // TttGame = new TttGame(2, 3, 3, 3);
+            TttGame = new TttGame(2, 4, 4, 3);
 
             ClientSize = GetPreferedWindowSize();
             Refresh();
@@ -121,7 +122,7 @@ namespace PenIsland
             {
                 for (int j = 0; j < TttGame.Height; ++j)
                 {
-                    int checkPlayer = TttGame.GetMove(i, j);
+                    int checkPlayer = TttGame.GetMove(new MoveInfo(i, j));
                     if (checkPlayer != Player.Invalid)
                     {
                         DrawMove(g, new Point(i, j), GetPlayerGlyph(checkPlayer), PlayerSettings.GetPlayerColor(checkPlayer));
@@ -170,9 +171,11 @@ namespace PenIsland
                 }
             }
 
+            MoveInfo moveInfo = new MoveInfo(clickedPoint.X, clickedPoint.Y);
+
             if (clickedPoint.X >= 0 && clickedPoint.Y >= 0)
             {
-                if (TttGame.GetMove(clickedPoint.X, clickedPoint.Y) != Player.Invalid)
+                if (TttGame.GetMove(moveInfo) != Player.Invalid)
                 {
                     clickedPoint = new Point(-1, -1);
                 }
@@ -182,7 +185,7 @@ namespace PenIsland
             {
                 if ((selectedPoint != null && clickedPoint == selectedPoint) || e.Clicks > 1)
                 {
-                    TttGame.RecordMove(clickedPoint.X, clickedPoint.Y);
+                    TttGame.RecordMove(moveInfo);
                     selectedPoint = null;
                 }
                 else
