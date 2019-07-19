@@ -23,9 +23,7 @@ namespace PenIsland
 
         public void NewGame()
         {
-            // TttGame = new TttGame(TttGameSettings.PlayerCount, TttGameSettings.BoardWidth, TttGameSettings.BoardHeight);
-            // TttGame = new TttGame(2, 3, 3, 3);
-            TttGame = new TttGame(2, 4, 4, 3);
+            TttGame = new TttGame(TttGameSettings.PlayerCount, TttGameSettings.BoardWidth, TttGameSettings.BoardHeight, TttGameSettings.WinLength);
 
             ClientSize = GetPreferedWindowSize();
             Refresh();

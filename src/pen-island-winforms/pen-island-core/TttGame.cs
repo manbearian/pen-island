@@ -12,6 +12,15 @@ namespace PenIsland
         public int Y;
 
         public MoveInfo(int x, int y) { X = x; Y = y; }
+        public static bool operator ==(MoveInfo a, MoveInfo b) { return a.Equals(b); }
+        public static bool operator !=(MoveInfo a, MoveInfo b) { return !a.Equals(b); }
+
+        public bool Equals(MoveInfo other) { return X == other.X && Y == other.Y; }
+        public override bool Equals(object o) { return Equals(o as MoveInfo);  }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     class TttGame
@@ -26,10 +35,10 @@ namespace PenIsland
         public int Winner { get; private set; }
 
         private readonly int[,] recordedMoves;
-        private int winningNumber;
+        private readonly int winLength;
         private readonly List<MoveInfo[]> moveStrings;
 
-        public TttGame(int playerCount, int boardWidth, int boardHeight, int winningNumber)
+        public TttGame(int playerCount, int boardWidth, int boardHeight, int winLength)
         {
             PlayerCount = playerCount;
             CurrentPlayer = Player.FirstPlayer;
@@ -38,7 +47,7 @@ namespace PenIsland
             Height = boardHeight;
 
             recordedMoves = new int[Width, Height];
-            this.winningNumber = winningNumber;
+            this.winLength = winLength;
 
             for (int i = 0; i < boardWidth; ++i)
             {
@@ -61,10 +70,10 @@ namespace PenIsland
             // record horizontal move-strings
             for (int i = 0; i < Width; ++i)
             {
-                for (int j = 0; j < Height - winningNumber + 1; ++j)
+                for (int j = 0; j < Height - winLength + 1; ++j)
                 {
-                    MoveInfo[] moveString = new MoveInfo[winningNumber];
-                    for (int k = 0; k < winningNumber; ++k)
+                    MoveInfo[] moveString = new MoveInfo[winLength];
+                    for (int k = 0; k < winLength; ++k)
                     {
                         moveString[k] = new MoveInfo(i, j + k);
                     }
@@ -75,10 +84,10 @@ namespace PenIsland
             // record vertical move-strings
             for (int i = 0; i < Height; ++i)
             {
-                for (int j = 0; j < Width - winningNumber + 1; ++j)
+                for (int j = 0; j < Width - winLength + 1; ++j)
                 {
-                    MoveInfo[] moveString = new MoveInfo[winningNumber];
-                    for (int k = 0; k < winningNumber; ++k)
+                    MoveInfo[] moveString = new MoveInfo[winLength];
+                    for (int k = 0; k < winLength; ++k)
                     {
                         moveString[k] = new MoveInfo(j + k, i);
                     }
@@ -88,13 +97,13 @@ namespace PenIsland
 
             // record diagonal move-strings
             int limit = Math.Min(Width, Height);
-            for (int i = 0; i < limit - winningNumber + 1; ++i)
+            for (int i = 0; i < limit - winLength + 1; ++i)
             {
-                for (int j = 0; j < limit - winningNumber + 1; ++j)
+                for (int j = 0; j < limit - winLength + 1; ++j)
                 {
-                    MoveInfo[] moveString1 = new MoveInfo[winningNumber];
-                    MoveInfo[] moveString2 = new MoveInfo[winningNumber];
-                    for (int k = 0, l = winningNumber - 1; k < winningNumber; ++k, --l)
+                    MoveInfo[] moveString1 = new MoveInfo[winLength];
+                    MoveInfo[] moveString2 = new MoveInfo[winLength];
+                    for (int k = 0, l = winLength - 1; k < winLength; ++k, --l)
                     {
                         moveString1[k] = new MoveInfo(i + k, j + k);
                         moveString2[k] = new MoveInfo(i + k, j + l);
@@ -145,7 +154,7 @@ namespace PenIsland
 
         bool CheckWinner(int [] plays)
         {
-            System.Diagnostics.Debug.Assert(plays.Length == winningNumber);
+            System.Diagnostics.Debug.Assert(plays.Length == winLength);
 
             if (plays[0] == Player.Invalid)
             {

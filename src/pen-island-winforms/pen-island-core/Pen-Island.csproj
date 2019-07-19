@@ -54,6 +54,7 @@
       <DependentUpon>dotsBoard.cs</DependentUpon>
     </Compile>
     <Compile Include="DotsGame.cs" />
+    <Compile Include="TttGameSettings.cs" />
     <Compile Include="DotsGameSettings.cs" />
     <Compile Include="DotsSettingsForm.cs">
       <SubType>Form</SubType>

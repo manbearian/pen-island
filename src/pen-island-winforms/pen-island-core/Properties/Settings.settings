@@ -68,5 +68,17 @@
     <Setting Name="Dots_BoardType" Type="System.String" Scope="User">
       <Value Profile="(Default)">"squares"</Value>
     </Setting>
+    <Setting Name="Ttt_PlayerCount" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="Ttt_BoardWidth" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="Ttt_BoardHeight" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="Ttt_WinLength" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
