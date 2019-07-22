@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PenIsland
 {
-    class DotsAutoPlayer
+    static class DotsAutoPlayer
     {
         public static void MakeMove(DotsGame game)
         {
@@ -233,8 +233,42 @@ namespace PenIsland
             }
 
             return LineInfo.Invalid;
+        }   
+    }
+
+    class GameTree
+    {
+        public TttGame game;
+        public GameTreeNode head;
+        public GameTree(TttGame game)
+        {
+            this.game = game;
+            head = new GameTreeNode(game.CloneState());
+        }
+    }
+
+    class GameTreeNode
+    {
+        public GameTreeNode(TttGameState state) {
+            this.state = state;
+        }
+        TttGameState state;
+        public List<GameTreeNode> Children = new List<GameTreeNode>();
+    }
+
+    class TttAutoPlayer
+    {
+
+        public static void MakeMove(TttGame game)
+        {
+            GameTree tree = new GameTree(game);
+            ExpandOneLevel(tree.head);
         }
 
-        
+        static void ExpandOneLevel(GameTreeNode node)
+        {
+            
+        }
     }
+
 }

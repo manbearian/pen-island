@@ -65,7 +65,7 @@ namespace PenIsland
         {
             if (value < 3)
                 throw new Exception("win length must be >= 3");
-            if (value > BoardHeight || value > BoardWidth)
+            if (value > BoardHeight && value > BoardWidth)
                 throw new Exception("win length is too big for board size");
         }
         

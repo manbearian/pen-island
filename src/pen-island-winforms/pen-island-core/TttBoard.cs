@@ -95,7 +95,7 @@ namespace PenIsland
                 return;
 
             // debugging variable allowing drawing a box around the board so every space is closed squre
-            bool drawBorder = true;
+            bool drawBorder = false;
 
             // draw the vertical lines
             int x = PreferedBorder + (drawBorder ? 0 : PreferedGrid);

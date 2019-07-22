@@ -23,6 +23,96 @@ namespace PenIsland
         }
     }
 
+    struct TttGameState
+    {
+        private readonly int[,] recordedMoves;
+
+        public TttGameState(int width, int height)
+        {
+            recordedMoves = new int[width, height];
+        }
+
+        public TttGameState(TttGameState copyFrom)
+        {
+            recordedMoves = copyFrom.recordedMoves.Clone() as int[,];
+        }
+
+        public int this[MoveInfo move]
+        {
+            get { return recordedMoves[move.X, move.Y]; }
+            set { recordedMoves[move.X, move.Y] = value; }
+        }
+
+        public int this[int x, int y]
+        {
+            get { return recordedMoves[x, y]; }
+            set { recordedMoves[x, y] = value; }
+
+        }
+
+        public TttGameState Clone()
+        {
+            return new TttGameState(this);
+        }
+
+        //  X | O |
+        // ---+---+---
+        //    | X | O
+        // ---+---+---
+        //    |   | X
+        //
+        public override string ToString()
+        {
+            var buffer = new StringBuilder();
+
+            for (int j = 0; j < recordedMoves.GetLength(1); ++j)
+            {
+                for (int i = 0; i < recordedMoves.GetLength(0); ++i)
+                {
+                    string glyph = " ";
+
+                    var player = this[i, j];
+                    switch (player)
+                    {
+                        case 0:   glyph = "X"; break;
+                        case 1:   glyph = "O"; break;
+                        default:  glyph = player > 0 ? player.ToString() : " "; break;
+                    }
+
+                    buffer.Append(" ");
+                    buffer.Append(glyph);
+                    buffer.Append(" ");
+                    if (i != recordedMoves.GetLength(0) - 1)
+                    {
+                        buffer.Append("|");
+                    }
+                    else
+                    {
+                        buffer.AppendLine();
+                    }
+                }
+
+                if (j != recordedMoves.GetLength(1) - 1)
+                {
+                    for (int i = 0; i < recordedMoves.GetLength(1); ++i)
+                    {
+                        buffer.Append("---");
+                        if (i != recordedMoves.GetLength(0) - 1)
+                        {
+                            buffer.Append("+");
+                        }
+                        else
+                        {
+                            buffer.AppendLine();
+                        }
+                    }
+                }
+            }
+
+            return buffer.ToString();
+        }
+    }
+
     class TttGame
     {
         public int PlayerCount { get; private set; }
@@ -34,7 +124,7 @@ namespace PenIsland
         public bool GameOver { get; private set; }
         public int Winner { get; private set; }
 
-        private readonly int[,] recordedMoves;
+        private TttGameState state;
         private readonly int winLength;
         private readonly List<MoveInfo[]> moveStrings;
 
@@ -46,14 +136,14 @@ namespace PenIsland
             Width = boardWidth;
             Height = boardHeight;
 
-            recordedMoves = new int[Width, Height];
+            state = new TttGameState(boardWidth, boardHeight);
             this.winLength = winLength;
 
             for (int i = 0; i < boardWidth; ++i)
             {
                 for (int j = 0; j < boardHeight; ++j)
                 {
-                    recordedMoves[i, j] = Player.Invalid;
+                    state[i, j] = Player.Invalid;
                 }
             }
             
@@ -114,14 +204,19 @@ namespace PenIsland
             }
         }
 
+        public TttGameState CloneState()
+        {
+            return state.Clone();
+        }
+
         public int GetMove(MoveInfo move)
         {
-            return recordedMoves[move.X, move.Y];
+            return state[move];
         }
 
         public void RecordMove(MoveInfo move)
         {
-            recordedMoves[move.X, move.Y] = CurrentPlayer;
+            state[move] = CurrentPlayer;
 
             bool pathToVictory = false;
             foreach (var moveString in moveStrings)
