@@ -14,7 +14,7 @@ namespace PenIsland
     {
         LineInfo selectedLine = LineInfo.Invalid;
 
-        internal DotsGame DotsGame { get; private set; }
+        internal DotsGame Game { get; private set; }
 
         Color[] playerColors = new Color[Player.MaxPlayers];
 
@@ -25,7 +25,7 @@ namespace PenIsland
 
         public void NewGame()
         {
-            DotsGame = new DotsGame(DotsGameSettings.PlayerCount, DotsGameSettings.BoardType, DotsGameSettings.BoardWidth, DotsGameSettings.BoardHeight);
+            Game = new DotsGame(DotsGameSettings.PlayerCount, DotsGameSettings.BoardType, DotsGameSettings.BoardWidth, DotsGameSettings.BoardHeight);
             
             ClientSize = GetPreferedWindowSize();
             Refresh();
@@ -45,7 +45,7 @@ namespace PenIsland
 
         public Size GetPreferedWindowSize()
         {
-            return new Size(DotsGame.Width * PreferedSpacer + PreferedDotSize, DotsGame.Height * PreferedSpacer + PreferedDotSize);
+            return new Size(Game.Width * PreferedSpacer + PreferedDotSize, Game.Height * PreferedSpacer + PreferedDotSize);
         }
         
         private void DotsBoard_Paint(object sender, PaintEventArgs e)
@@ -53,13 +53,13 @@ namespace PenIsland
             var g = e.Graphics;
             g.FillRectangle(Brushes.White, this.ClientRectangle);
 
-            if (DotsGame == null)
+            if (Game == null)
                 return;
 
             // draw the dots
-            for (int i = 0; i < DotsGame.Width; ++i)
+            for (int i = 0; i < Game.Width; ++i)
             {
-                for (int j = 0; j < DotsGame.Height; ++j)
+                for (int j = 0; j < Game.Height; ++j)
                 {
                     var x = PreferedBorder + i * PreferedSpacer;
                     var y = PreferedBorder + j * PreferedSpacer;
@@ -70,30 +70,30 @@ namespace PenIsland
 
             // draw the state
 
-            for (int i = 0; i < DotsGame.Width; ++i)
+            for (int i = 0; i < Game.Width; ++i)
             {
-                for (int j = 0; j < DotsGame.Height; ++j)
+                for (int j = 0; j < Game.Height; ++j)
                 {
                     int player = Player.Invalid;
                     int hStart = PreferedBorder + i * PreferedSpacer + PreferedDotSize / 2;
                     int vStart = PreferedBorder + j * PreferedSpacer + PreferedDotSize / 2;
 
                     // draw squares first so lines end up on top of them
-                    player = DotsGame.GetSquare(i, j);
+                    player = Game.GetSquare(i, j);
                     if (player != Player.Invalid)
                     {
                         var brush = new SolidBrush(PlayerSettings.GetPlayerColor(player));
                         g.FillRectangle(brush, hStart, vStart, PreferedSpacer, PreferedSpacer);
                     }
 
-                    player = DotsGame.GetHorizontal(i, j);
+                    player = Game.GetHorizontal(i, j);
                     if (player != Player.Invalid)
                     {
                         Pen pen = new Pen(PlayerSettings.GetPlayerColor(player));
                         g.DrawLine(pen, new Point(hStart, vStart), new Point(hStart + PreferedSpacer, vStart));
                     }
 
-                    player = DotsGame.GetVertical(i, j);
+                    player = Game.GetVertical(i, j);
                     if (player != Player.Invalid)
                     {
                         Pen pen = new Pen(PlayerSettings.GetPlayerColor(player));
@@ -138,7 +138,7 @@ namespace PenIsland
             if (e.Button != MouseButtons.Left)
                 return;
 
-            if (DotsGame == null || DotsGame.GameOver || PlayerSettings.GetPlayerController(DotsGame.CurrentPlayer) == PlayerController.Computer)
+            if (Game == null || Game.GameOver || PlayerSettings.GetPlayerController(Game.CurrentPlayer) == PlayerController.Computer)
                 return;
 
             LineInfo clickedLine = new LineInfo();
@@ -147,7 +147,7 @@ namespace PenIsland
             // give a few pixes of fudge to either side. Use PreferedDotSize/2 as fudge.
             int fudge = PreferedDotSize / 2;
 
-            for (int i = 0; i < DotsGame.Width; ++i)
+            for (int i = 0; i < Game.Width; ++i)
             {
                 if (e.X > PreferedBorder + i * PreferedSpacer - fudge
                     && e.X < PreferedBorder + i * PreferedSpacer + PreferedDotSize + fudge)
@@ -163,7 +163,7 @@ namespace PenIsland
                 }
             }
 
-            for (int i = 0; i < DotsGame.Height; ++i)
+            for (int i = 0; i < Game.Height; ++i)
             {
                 if (e.Y > PreferedBorder + i * PreferedSpacer - fudge
                     && e.Y < PreferedBorder + i * PreferedSpacer + PreferedDotSize + fudge)
@@ -189,13 +189,13 @@ namespace PenIsland
             switch (clickedLine.LineType)
             {
                 case LineType.Horizontal:
-                    if (DotsGame.GetHorizontal(clickedLine.X, clickedLine.Y) != Player.Invalid)
+                    if (Game.GetHorizontal(clickedLine.X, clickedLine.Y) != Player.Invalid)
                     {
                         clickedLine.LineType = LineType.None;
                     }
                     break;
                 case LineType.Vertical:
-                    if (DotsGame.GetVertical(clickedLine.X, clickedLine.Y) != Player.Invalid)
+                    if (Game.GetVertical(clickedLine.X, clickedLine.Y) != Player.Invalid)
                     {
                         clickedLine.LineType = LineType.None;
                     }
@@ -207,7 +207,7 @@ namespace PenIsland
             {
                 if (clickedLine.LineType != LineType.None)
                 {
-                    DotsGame.RecordMove(clickedLine);
+                    Game.RecordMove(clickedLine);
                 }
 
                 selectedLine.LineType = LineType.None;
@@ -226,15 +226,15 @@ namespace PenIsland
 
         void RunComputerPlayers()
         {
-            if (DotsGame.GameOver)
+            if (Game.GameOver)
                 return;
 
-            if (PlayerSettings.GetPlayerController(DotsGame.CurrentPlayer) != PlayerController.Computer)
+            if (PlayerSettings.GetPlayerController(Game.CurrentPlayer) != PlayerController.Computer)
             {
                 return;
             }
 
-            DotsAutoPlayer.MakeMove(DotsGame);
+            DotsAutoPlayer.MakeMove(Game);
             
             Parent.Refresh();
 
@@ -246,22 +246,22 @@ namespace PenIsland
             message = "";
             color = Color.Black;
 
-            if (DotsGame == null) {
+            if (Game == null) {
                 return; 
             }
             
-            if (!DotsGame.GameOver)
+            if (!Game.GameOver)
             {
-                var player = DotsGame.CurrentPlayer;
+                var player = Game.CurrentPlayer;
                 color = PlayerSettings.GetPlayerColor(player);
                 message = string.Format("Player {0}", player + 1);
             }
             else
             {
-                var score = DotsGame.ScoreBoard;
+                var score = Game.ScoreBoard;
                 List<int> winners = new List<int>();
                 int topScore = 0;
-                for (int i = 0; i < DotsGame.PlayerCount; ++i)
+                for (int i = 0; i < Game.PlayerCount; ++i)
                 {
                     if (score[i] > topScore)
                     {
@@ -275,7 +275,7 @@ namespace PenIsland
                     }
                 }
 
-                if (winners.Count == DotsGame.PlayerCount)
+                if (winners.Count == Game.PlayerCount)
                 {
                     // tie game (no winner)
                     message = string.Format("Game Over, It's a Draw!");
