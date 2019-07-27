@@ -12,7 +12,7 @@ namespace PenIsland
 {
     public partial class TttBoard : UserControl, GameBoard
     {
-        internal TttGame TttGame { get; private set; }
+        internal TttGame Game { get; private set; }
 
         Point? selectedPoint;
 
@@ -23,7 +23,7 @@ namespace PenIsland
 
         public void NewGame()
         {
-            TttGame = new TttGame(TttGameSettings.PlayerCount, TttGameSettings.BoardWidth, TttGameSettings.BoardHeight, TttGameSettings.WinLength);
+            Game = new TttGame(TttGameSettings.PlayerCount, TttGameSettings.BoardWidth, TttGameSettings.BoardHeight, TttGameSettings.WinLength);
 
             ClientSize = GetPreferedWindowSize();
             Refresh();
@@ -57,7 +57,7 @@ namespace PenIsland
         public Size GetPreferedWindowSize()
         {
             //return new Size(DotsGame.Width * PreferedSpacer + PreferedDotSize, DotsGame.Height * PreferedSpacer + PreferedDotSize);
-            return new Size((PreferedGrid * TttGame.Width) + PreferedBorder * 2, (PreferedGrid * TttGame.Height) + PreferedBorder * 2);
+            return new Size((PreferedGrid * Game.Width) + PreferedBorder * 2, (PreferedGrid * Game.Height) + PreferedBorder * 2);
         }
 
         private void DrawMove(Graphics g, Point location, PlayerGlyph glyph, Color color)
@@ -91,7 +91,7 @@ namespace PenIsland
 
             g.FillRectangle(Brushes.White, this.ClientRectangle);
 
-            if (TttGame == null)
+            if (Game == null)
                 return;
 
             // debugging variable allowing drawing a box around the board so every space is closed squre
@@ -99,28 +99,28 @@ namespace PenIsland
 
             // draw the vertical lines
             int x = PreferedBorder + (drawBorder ? 0 : PreferedGrid);
-            for (int i = 0; i < TttGame.Width + (drawBorder ? 1 : -1); ++i, x += PreferedGrid)
+            for (int i = 0; i < Game.Width + (drawBorder ? 1 : -1); ++i, x += PreferedGrid)
             {
-                g.DrawLine(Pens.Black, new Point(x, PreferedBorder), new Point(x, PreferedBorder + (PreferedGrid * TttGame.Height)));
+                g.DrawLine(Pens.Black, new Point(x, PreferedBorder), new Point(x, PreferedBorder + (PreferedGrid * Game.Height)));
             }
 
             // draw the horizontal lines
             int y = PreferedBorder + (drawBorder ? 0 : PreferedGrid);
-            for (int j = 0; j < TttGame.Height + (drawBorder ? 1 : -1); ++j, y += PreferedGrid)
+            for (int j = 0; j < Game.Height + (drawBorder ? 1 : -1); ++j, y += PreferedGrid)
             {
-                g.DrawLine(Pens.Black, new Point(PreferedBorder, y), new Point(PreferedBorder + (PreferedGrid * TttGame.Width), y));
+                g.DrawLine(Pens.Black, new Point(PreferedBorder, y), new Point(PreferedBorder + (PreferedGrid * Game.Width), y));
             }
 
             if (selectedPoint != null)
             {
-                DrawMove(g, selectedPoint.Value, GetPlayerGlyph(TttGame.CurrentPlayer), Color.Aquamarine);
+                DrawMove(g, selectedPoint.Value, GetPlayerGlyph(Game.CurrentPlayer), Color.Aquamarine);
             }
 
-            for (int i = 0; i < TttGame.Width; ++i)
+            for (int i = 0; i < Game.Width; ++i)
             {
-                for (int j = 0; j < TttGame.Height; ++j)
+                for (int j = 0; j < Game.Height; ++j)
                 {
-                    int checkPlayer = TttGame.GetMove(new MoveInfo(i, j));
+                    int checkPlayer = Game.GetMove(new MoveInfo(i, j));
                     if (checkPlayer != Player.Invalid)
                     {
                         DrawMove(g, new Point(i, j), GetPlayerGlyph(checkPlayer), PlayerSettings.GetPlayerColor(checkPlayer));
@@ -144,13 +144,13 @@ namespace PenIsland
             if (e.Button != MouseButtons.Left)
                 return;
 
-            if (TttGame == null || TttGame.GameOver || PlayerSettings.GetPlayerController(TttGame.CurrentPlayer) == PlayerController.Computer)
+            if (Game == null || Game.GameOver || PlayerSettings.GetPlayerController(Game.CurrentPlayer) == PlayerController.Computer)
                 return;
 
             Point clickedPoint = new Point(-1, -1);
 
             int x = PreferedBorder;
-            for (int i = 0; i < TttGame.Width; ++i, x += PreferedGrid)
+            for (int i = 0; i < Game.Width; ++i, x += PreferedGrid)
             {
                 if (e.X > x && e.X < (x + PreferedGrid))
                 {
@@ -160,7 +160,7 @@ namespace PenIsland
             }
 
             int y = PreferedBorder;
-            for (int i = 0; i < TttGame.Height; ++i, y += PreferedGrid)
+            for (int i = 0; i < Game.Height; ++i, y += PreferedGrid)
             {
                 if (e.Y > y && e.Y < (y + PreferedGrid))
                 {
@@ -173,7 +173,7 @@ namespace PenIsland
 
             if (clickedPoint.X >= 0 && clickedPoint.Y >= 0)
             {
-                if (TttGame.GetMove(moveInfo) != Player.Invalid)
+                if (Game.GetMove(moveInfo) != Player.Invalid)
                 {
                     clickedPoint = new Point(-1, -1);
                 }
@@ -183,7 +183,7 @@ namespace PenIsland
             {
                 if ((selectedPoint != null && clickedPoint == selectedPoint) || e.Clicks > 1)
                 {
-                    TttGame.RecordMove(moveInfo);
+                    Game.RecordMove(moveInfo);
                     selectedPoint = null;
                 }
                 else
@@ -203,7 +203,19 @@ namespace PenIsland
 
         void RunComputerPlayers()
         {
+            if (Game.GameOver)
+                return;
 
+            if (PlayerSettings.GetPlayerController(Game.CurrentPlayer) != PlayerController.Computer)
+            {
+                return;
+            }
+
+            TttAutoPlayer.MakeMove(Game);
+
+            Parent.Refresh();
+
+            RunComputerPlayers();
         }
 
         public void GetStatusMessage(out string message, out Color color)
@@ -211,20 +223,20 @@ namespace PenIsland
             message = "";
             color = Color.Black;
 
-            if (TttGame == null)
+            if (Game == null)
             {
                 return;
             }
 
-            if (!TttGame.GameOver)
+            if (!Game.GameOver)
             {
-                var player = TttGame.CurrentPlayer;
+                var player = Game.CurrentPlayer;
                 color = PlayerSettings.GetPlayerColor(player);
                 message = string.Format("{0}'s turn", GetPlayerGlyph(player).ToString());
             }
             else
             {
-                var player = TttGame.Winner;
+                var player = Game.Winner;
                 if (player == Player.Invalid)
                 {
                     message = string.Format("Cat's Game!");
