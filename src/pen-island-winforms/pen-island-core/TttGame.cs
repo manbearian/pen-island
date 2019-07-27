@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PenIsland
 {
-    class MoveInfo
+    struct MoveInfo
     {
         public int X;
         public int Y;
@@ -16,7 +16,7 @@ namespace PenIsland
         public static bool operator !=(MoveInfo a, MoveInfo b) { return !a.Equals(b); }
 
         public bool Equals(MoveInfo other) { return X == other.X && Y == other.Y; }
-        public override bool Equals(object o) { return Equals(o as MoveInfo);  }
+        public override bool Equals(object o) { return Equals((MoveInfo)o);  }
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -214,10 +214,8 @@ namespace PenIsland
             return state[move];
         }
 
-        public void RecordMove(MoveInfo move)
+        public int? CheckWinner(TttGameState state)
         {
-            state[move] = CurrentPlayer;
-
             bool pathToVictory = false;
             foreach (var moveString in moveStrings)
             {
@@ -225,14 +223,13 @@ namespace PenIsland
 
                 for (int i = 0; i < moveString.Length; ++i)
                 {
-                    plays[i] = GetMove(moveString[i]);
+                    plays[i] = state[moveString[i]];
                 }
 
-                if (CheckWinner(plays))
+                var winner = CheckWinner(plays);
+                if (winner != Player.Invalid)
                 {
-                    System.Diagnostics.Debug.Assert(moveString.Contains(move), "Game wasn't won by the current move?!?");
-                    EndGame();
-                    return;
+                    return winner;
                 }
 
                 pathToVictory |= !CheckBlocked(plays);
@@ -240,32 +237,54 @@ namespace PenIsland
 
             if (!pathToVictory)
             {
-                CurrentPlayer = Player.Invalid;
-                EndGame();
+                // "Cat's Game" - no winner can exist
+                return Player.Invalid;
             }
 
-            EndTurn();
+            // no winner yet, game continues...
+            return null;
         }
 
-        bool CheckWinner(int [] plays)
+        public void RecordMove(MoveInfo move)
         {
-            System.Diagnostics.Debug.Assert(plays.Length == winLength);
+            state[move] = CurrentPlayer;
 
-            if (plays[0] == Player.Invalid)
+            var winner = CheckWinner(state);
+
+            if (winner == null)
             {
-                return false;
+                EndTurn();
+                return;
+            }
+
+            if (winner == Player.Invalid)
+            {
+                CurrentPlayer = Player.Invalid;
+            }
+
+            System.Diagnostics.Debug.Assert(winner == CurrentPlayer, "Game wasn't won by the current player?!?");
+            EndGame();
+        }
+
+        static int CheckWinner(int [] plays)
+        {
+            var player = plays[0];
+
+            if (player == Player.Invalid)
+            {
+                return Player.Invalid;
             }
 
             for (int i = 1; i < plays.Length; ++i)
             {
-                if (plays[i] != plays[0])
-                    return false;
+                if (plays[i] != player)
+                    return Player.Invalid;
             }
 
-            return true;
+            return player;
         }
 
-        bool CheckBlocked(int [] plays)
+        static bool CheckBlocked(int [] plays)
         {
             int seenPlayer = Player.Invalid;
 
