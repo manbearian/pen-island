@@ -247,6 +247,5 @@ namespace PenIsland
                 }
             }
         }
-
-        }
+    }
 }
