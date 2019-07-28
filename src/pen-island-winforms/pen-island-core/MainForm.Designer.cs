@@ -32,9 +32,11 @@
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTicTacToeGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newMatchLineGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playerColorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dotsBoard = new PenIsland.DotsBoard();
             this.tttBoard = new PenIsland.TttBoard();
+            this.c4Board = new PenIsland.C4Board();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,37 +56,45 @@
             this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newGameToolStripMenuItem,
             this.newTicTacToeGameToolStripMenuItem,
+            this.newMatchLineGameToolStripMenuItem,
             this.playerColorsToolStripMenuItem});
             this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
-            this.gameToolStripMenuItem.Size = new System.Drawing.Size(70, 29);
+            this.gameToolStripMenuItem.Size = new System.Drawing.Size(74, 29);
             this.gameToolStripMenuItem.Text = "Game";
             // 
             // newGameToolStripMenuItem
             // 
             this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
-            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(285, 30);
+            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(303, 34);
             this.newGameToolStripMenuItem.Text = "New Dots Game...";
-            this.newGameToolStripMenuItem.Click += new System.EventHandler(this.newDotsGameToolStripMenuItem_Click);
+            this.newGameToolStripMenuItem.Click += new System.EventHandler(this.NewDotsGameToolStripMenuItem_Click);
             // 
             // newTicTacToeGameToolStripMenuItem
             // 
             this.newTicTacToeGameToolStripMenuItem.Name = "newTicTacToeGameToolStripMenuItem";
-            this.newTicTacToeGameToolStripMenuItem.Size = new System.Drawing.Size(285, 30);
+            this.newTicTacToeGameToolStripMenuItem.Size = new System.Drawing.Size(303, 34);
             this.newTicTacToeGameToolStripMenuItem.Text = "New Tic-Tac-Toe Game...";
-            this.newTicTacToeGameToolStripMenuItem.Click += new System.EventHandler(this.newTicTacToeGameToolStripMenuItem_Click);
+            this.newTicTacToeGameToolStripMenuItem.Click += new System.EventHandler(this.NewTicTacToeGameToolStripMenuItem_Click);
+            // 
+            // newMatchLineGameToolStripMenuItem
+            // 
+            this.newMatchLineGameToolStripMenuItem.Name = "newMatchLineGameToolStripMenuItem";
+            this.newMatchLineGameToolStripMenuItem.Size = new System.Drawing.Size(303, 34);
+            this.newMatchLineGameToolStripMenuItem.Text = "New Match Line Game...";
+            this.newMatchLineGameToolStripMenuItem.Click += new System.EventHandler(this.NewMatchLineGameToolStripMenuItem_Click);
             // 
             // playerColorsToolStripMenuItem
             // 
             this.playerColorsToolStripMenuItem.Name = "playerColorsToolStripMenuItem";
-            this.playerColorsToolStripMenuItem.Size = new System.Drawing.Size(285, 30);
+            this.playerColorsToolStripMenuItem.Size = new System.Drawing.Size(303, 34);
             this.playerColorsToolStripMenuItem.Text = "Player Settings...";
-            this.playerColorsToolStripMenuItem.Click += new System.EventHandler(this.playerColorsToolStripMenuItem_Click);
+            this.playerColorsToolStripMenuItem.Click += new System.EventHandler(this.PlayerColorsToolStripMenuItem_Click);
             // 
             // dotsBoard
             // 
             this.dotsBoard.Location = new System.Drawing.Point(0, 40);
             this.dotsBoard.Name = "dotsBoard";
-            this.dotsBoard.Size = new System.Drawing.Size(458, 468);
+            this.dotsBoard.Size = new System.Drawing.Size(253, 274);
             this.dotsBoard.TabIndex = 1;
             this.dotsBoard.Visible = false;
             // 
@@ -92,16 +102,24 @@
             // 
             this.tttBoard.Location = new System.Drawing.Point(0, 40);
             this.tttBoard.Name = "tttBoard";
-            this.tttBoard.Size = new System.Drawing.Size(468, 473);
+            this.tttBoard.Size = new System.Drawing.Size(284, 304);
             this.tttBoard.TabIndex = 2;
             this.tttBoard.Visible = false;
+            // 
+            // c4Board
+            // 
+            this.c4Board.Location = new System.Drawing.Point(0, 40);
+            this.c4Board.Name = "c4Board";
+            this.c4Board.Size = new System.Drawing.Size(242, 269);
+            this.c4Board.TabIndex = 3;
+            this.c4Board.Visible = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(464, 511);
+            this.Controls.Add(this.c4Board);
             this.Controls.Add(this.tttBoard);
             this.Controls.Add(this.dotsBoard);
             this.Controls.Add(this.menuStrip1);
@@ -127,6 +145,8 @@
         private System.Windows.Forms.ToolStripMenuItem playerColorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newTicTacToeGameToolStripMenuItem;
         private TttBoard tttBoard;
+        private System.Windows.Forms.ToolStripMenuItem newMatchLineGameToolStripMenuItem;
+        private C4Board c4Board;
     }
 }
 

@@ -47,11 +47,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoPlayer.cs" />
-    <Compile Include="dotsBoard.cs">
+    <Compile Include="C4Board.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="dotsBoard.Designer.cs">
-      <DependentUpon>dotsBoard.cs</DependentUpon>
+    <Compile Include="C4Board.Designer.cs">
+      <DependentUpon>C4Board.cs</DependentUpon>
+    </Compile>
+    <Compile Include="C4Game.cs" />
+    <Compile Include="DotsBoard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DotsBoard.Designer.cs">
+      <DependentUpon>DotsBoard.cs</DependentUpon>
     </Compile>
     <Compile Include="DotsGame.cs" />
     <Compile Include="TttGameSettings.cs" />
@@ -94,8 +101,11 @@
     <Compile Include="TttSettingsForm.Designer.cs">
       <DependentUpon>TttSettingsForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="dotsBoard.resx">
-      <DependentUpon>dotsBoard.cs</DependentUpon>
+    <EmbeddedResource Include="C4Board.resx">
+      <DependentUpon>C4Board.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DotsBoard.resx">
+      <DependentUpon>DotsBoard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DotsSettingsForm.resx">
       <DependentUpon>DotsSettingsForm.cs</DependentUpon>

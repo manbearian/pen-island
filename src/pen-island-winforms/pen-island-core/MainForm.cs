@@ -19,7 +19,7 @@ namespace PenIsland
 
         enum GameKind
         {
-            Invalid, Dots, TicTacToe
+            Invalid, Dots, TicTacToe, MatchLine,
         }
 
         GameKind gameKind = GameKind.Invalid;
@@ -32,6 +32,7 @@ namespace PenIsland
                 {
                     case GameKind.Dots: return dotsBoard;
                     case GameKind.TicTacToe: return tttBoard;
+                    case GameKind.MatchLine: return c4Board;
                     default: return null;
                 }
             }
@@ -48,6 +49,7 @@ namespace PenIsland
 
             dotsBoard.Visible = false;
             tttBoard.Visible = false;
+            c4Board.Visible = false;
 
             UserControl gameBoardControl = GameBoard as UserControl;
 
@@ -60,7 +62,7 @@ namespace PenIsland
             Refresh();
         }
 
-        private void newDotsGameToolStripMenuItem_Click(object sender, EventArgs e)
+        private void NewDotsGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DotsSettingsForm gs = new DotsSettingsForm();
             gs.ShowDialog();
@@ -71,7 +73,7 @@ namespace PenIsland
             }
         }
 
-        private void newTicTacToeGameToolStripMenuItem_Click(object sender, EventArgs e)
+        private void NewTicTacToeGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TttSettingsForm gs = new TttSettingsForm();
             gs.ShowDialog();
@@ -82,7 +84,12 @@ namespace PenIsland
             }
         }
 
-        private void playerColorsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void NewMatchLineGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewGame(GameKind.MatchLine);
+        }
+
+        private void PlayerColorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PlayerSettingsForm pc = new PlayerSettingsForm();
             pc.ShowDialog(dotsBoard);
