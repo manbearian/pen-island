@@ -16,8 +16,6 @@ namespace PenIsland
 
         internal DotsGame Game { get; private set; }
 
-        Color[] playerColors = new Color[Player.MaxPlayers];
-
         public DotsBoard()
         {
             InitializeComponent();

@@ -7,18 +7,6 @@ namespace PenIsland
     {
         public static void MakeMove(DotsGame game)
         {
-            // MakeFirstAvailable(game);
-            MakeBestAvailable(game);
-        }
-
-        static void MakeFirstAvailable(DotsGame game)
-        {
-            LineInfo info = FindFirstAvailable(game);
-            game.RecordMove(info);
-        }
-
-        static void MakeBestAvailable(DotsGame game)
-        {
             LineInfo bestMove = LineInfo.Invalid;
             int bestScore = int.MinValue;
 
@@ -246,19 +234,19 @@ namespace PenIsland
 
     class GameTreeNode
     {
-        public GameTreeNode(TttGameState state) {
+        public GameTreeNode(TttGame.State state) {
             State = state;
         }
-        public TttGameState State;
+        public TttGame.State State;
         public List<GameTreeNode> Children = new List<GameTreeNode>();
         public int Score = 0;
     }
 
     class TttAutoPlayer
     {
-        public static MoveInfo StateDiff(TttGame game, TttGameState before, TttGameState after)
+        public static TttGame.Move StateDiff(TttGame game, TttGame.State before, TttGame.State after)
         {
-            MoveInfo? move = null;
+            TttGame.Move? move = null;
             for (int i = 0; i < game.Width; ++i)
             {
                 for (int j = 0; j < game.Height; ++j)
@@ -274,7 +262,7 @@ namespace PenIsland
 
 #if DEBUG
                         System.Diagnostics.Debug.Assert(move == null);
-                        move = new MoveInfo(i, j);
+                        move = new TttGame.Move(i, j);
 #else
                         break;
 #endif
@@ -292,7 +280,7 @@ namespace PenIsland
         
             Expand(tree);
 
-            MoveInfo? bestMove = null;
+            TttGame.Move? bestMove = null;
             int bestScore = int.MinValue;
             foreach (var child in tree.head.Children)
             {
