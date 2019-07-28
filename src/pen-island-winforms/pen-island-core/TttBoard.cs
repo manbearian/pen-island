@@ -8,13 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Move = PenIsland.TttGame.Move;
+
 namespace PenIsland
 {
     public partial class TttBoard : UserControl, GameBoard
     {
         internal TttGame Game { get; private set; }
 
-        Point? selectedPoint;
+        Move? selectedMove;
 
         public TttBoard()
         {
@@ -56,14 +58,13 @@ namespace PenIsland
 
         public Size GetPreferedWindowSize()
         {
-            //return new Size(DotsGame.Width * PreferedSpacer + PreferedDotSize, DotsGame.Height * PreferedSpacer + PreferedDotSize);
             return new Size((PreferedGrid * Game.Width) + PreferedBorder * 2, (PreferedGrid * Game.Height) + PreferedBorder * 2);
         }
 
-        private void DrawMove(Graphics g, Point location, PlayerGlyph glyph, Color color)
+        private void DrawMove(Graphics g, Move move, PlayerGlyph glyph, Color color)
         {
-            int x = PreferedBorder + PreferedGrid * location.X;
-            int y = PreferedBorder + PreferedGrid * location.Y;
+            int x = PreferedBorder + PreferedGrid * move.X;
+            int y = PreferedBorder + PreferedGrid * move.Y;
 
             Pen pen = new Pen(color);
 
@@ -111,19 +112,19 @@ namespace PenIsland
                 g.DrawLine(Pens.Black, new Point(PreferedBorder, y), new Point(PreferedBorder + (PreferedGrid * Game.Width), y));
             }
 
-            if (selectedPoint != null)
+            if (selectedMove != null)
             {
-                DrawMove(g, selectedPoint.Value, GetPlayerGlyph(Game.CurrentPlayer), Color.Aquamarine);
+                DrawMove(g, selectedMove.Value, GetPlayerGlyph(Game.CurrentPlayer), Color.Aquamarine);
             }
 
             for (int i = 0; i < Game.Width; ++i)
             {
                 for (int j = 0; j < Game.Height; ++j)
                 {
-                    int checkPlayer = Game.GetMove(new TttGame.Move(i, j));
+                    int checkPlayer = Game.GetMove(new Move(i, j));
                     if (checkPlayer != Player.Invalid)
                     {
-                        DrawMove(g, new Point(i, j), GetPlayerGlyph(checkPlayer), PlayerSettings.GetPlayerColor(checkPlayer));
+                        DrawMove(g, new Move(i, j), GetPlayerGlyph(checkPlayer), PlayerSettings.GetPlayerColor(checkPlayer));
                     }
                 }
             }
@@ -147,14 +148,14 @@ namespace PenIsland
             if (Game == null || Game.GameOver || PlayerSettings.GetPlayerController(Game.CurrentPlayer) == PlayerController.Computer)
                 return;
 
-            Point clickedPoint = new Point(-1, -1);
+            var clickedMove = new Move(-1, -1);
 
             int x = PreferedBorder;
             for (int i = 0; i < Game.Width; ++i, x += PreferedGrid)
             {
                 if (e.X > x && e.X < (x + PreferedGrid))
                 {
-                    clickedPoint.X = i;
+                    clickedMove.X = i;
                     break;
                 }
             }
@@ -164,36 +165,34 @@ namespace PenIsland
             {
                 if (e.Y > y && e.Y < (y + PreferedGrid))
                 {
-                    clickedPoint.Y = i;
+                    clickedMove.Y = i;
                     break;
                 }
             }
 
-            TttGame.Move move = new TttGame.Move(clickedPoint.X, clickedPoint.Y);
-
-            if (clickedPoint.X >= 0 && clickedPoint.Y >= 0)
+            if (clickedMove.X >= 0 && clickedMove.Y >= 0)
             {
-                if (Game.GetMove(move) != Player.Invalid)
+                if (Game.GetMove(clickedMove) != Player.Invalid)
                 {
-                    clickedPoint = new Point(-1, -1);
+                    clickedMove = new Move(-1, -1);
                 }
             }
 
-            if (clickedPoint.X >= 0 && clickedPoint.Y >= 0)
+            if (clickedMove.X >= 0 && clickedMove.Y >= 0)
             {
-                if ((selectedPoint != null && clickedPoint == selectedPoint) || e.Clicks > 1)
+                if ((selectedMove != null && clickedMove == selectedMove) || e.Clicks > 1)
                 {
-                    Game.RecordMove(move);
-                    selectedPoint = null;
+                    Game.RecordMove(clickedMove);
+                    selectedMove = null;
                 }
                 else
                 {
-                    selectedPoint = clickedPoint;
+                    selectedMove = clickedMove;
                 }
             }
             else
             {
-                selectedPoint = null;
+                selectedMove = null;
             }
 
             Parent.Refresh();
