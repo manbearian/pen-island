@@ -142,7 +142,7 @@ namespace PenIsland
         {
             GameTree tree = new GameTree(game);
 
-            tree.Expand(8);
+            tree.Expand(9);
 
             Move bestMove = tree.GetBestMove();
 
