@@ -113,6 +113,7 @@ namespace PenIsland
             public Move(int x, int y) { X = x; Y = y; }
             public static bool operator ==(Move a, Move b) { return a.Equals(b); }
             public static bool operator !=(Move a, Move b) { return !a.Equals(b); }
+            public static Move Invalid { get { return new Move(-1, -1); } }
 
             public bool Equals(Move other) { return X == other.X && Y == other.Y; }
             public override bool Equals(object o) { return Equals((Move)o); }
