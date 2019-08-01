@@ -3,65 +3,142 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
+using Game = PenIsland.C4Game;
 using Move = PenIsland.C4Game.Move;
 using State = PenIsland.C4Game.State;
-using GameTree = PenIsland.GameTree<PenIsland.C4Game.State>;
-using GameTreeNode = PenIsland.GameTreeNode<PenIsland.C4Game.State>;
-
+//using GameTree = PenIsland.GameTree<PenIsland.C4Game.State>;
+//using GameTreeNode = PenIsland.GameTreeNode<PenIsland.C4Game.State>;
 
 namespace PenIsland
 {
-    class C4AutoPlayer
+
+    class GameTree
     {
-        public static Move StateDiff(C4Game game, State before, State after)
+        public GameTree(Game game) { Game = game; }
+        public Game Game { get; }
+        public List<GameTreeNode> Children = new List<GameTreeNode>();
+
+        public void Expand(int depthLimit)
         {
-            Move? move = null;
-            for (int i = 0; i < game.Width; ++i)
+            Expand(depthLimit, null, Game.CloneState(), 0);
+        }
+
+        private void Expand(int depthLimit, GameTreeNode node, State state, int depth)
+        {
+            System.Diagnostics.Debug.Assert(depthLimit > 0);
+
+            if (node != null)
             {
-                for (int j = 0; j < game.Height; ++j)
+                var winner = Game.CheckWinner(state);
+
+                // Check to end recursion
+
+                if (winner != null)
                 {
-                    if (after[i, j] != before[i, j])
+                    if (winner == Game.CurrentPlayer)
                     {
-                        // ensure the only delta is a single new move
-                        System.Diagnostics.Debug.Assert(after[i, j] != Player.Invalid);
-                        System.Diagnostics.Debug.Assert(before[i, j] == Player.Invalid);
+                        node.Score = int.MaxValue - depth; // win
+                    }
+                    else if (winner == Player.Invalid)
+                    {
+                        node.Score = 0; // draw
+                    }
+                    else
+                    {
+                        node.Score = int.MinValue + depth; // lose
+                    }
+                    return;
+                }
+                else if (depth == depthLimit)
+                {
+                    node.Score = 0;
+                    return;
+                }
+            }
 
-                        // this function is only called to figure out what move the current player played
-                        System.Diagnostics.Debug.Assert(after[i, j] == game.CurrentPlayer);
+            var children = node != null ? node.Children : Children;
+            var playerAtDepth = (Game.CurrentPlayer + depth) % Game.PlayerCount;
 
-#if DEBUG
-                        System.Diagnostics.Debug.Assert(move == null);
-                        move = new Move(i, j);
-#else
-                        break;
-#endif
+            for (int i = 0; i < Game.Width; ++i)
+            {
+                for (int j = 0; j < Game.Height; ++j)
+                {
+                    var move = new Move(i, j);
+
+                    if ((state[move] != Player.Invalid)
+                        || (j < Game.Height - 1) && ((state[i, j + 1]) == Player.Invalid))
+                    {
+                        continue;
+                    }
+
+                    if (state[move] == Player.Invalid)
+                    {
+                        var child = new GameTreeNode(move);
+                        children.Add(child);
+                        state[move] = playerAtDepth;
+                        Expand(depthLimit, child, state, depth + 1);
+                        state[move] = Player.Invalid;
                     }
                 }
             }
 
-            System.Diagnostics.Debug.Assert(move != null);
-            return move.Value;
-        }
+            System.Diagnostics.Debug.Assert(children.Count > 0, "there should have been an available move");
 
+            // Score the node
+
+            if (node != null)
+            {
+                var depthPlayerIsMe = playerAtDepth == Game.CurrentPlayer;
+                int score = depthPlayerIsMe ? int.MinValue : int.MaxValue;
+                foreach (var child in node.Children)
+                {
+                    if (depthPlayerIsMe)
+                        score = Math.Max(score, child.Score);
+                    else
+                        score = Math.Min(score, child.Score);
+                }
+                node.Score = score;
+                node.Children = null; // free the memory, we're dont with it
+            }
+        }
+    }
+
+    class GameTreeNode
+    {
+        public GameTreeNode(Move move) { Move = move; }
+        public Move Move { get; }
+        public int Score;
+        public List<GameTreeNode> Children = new List<GameTreeNode>();
+    }
+
+    class C4AutoPlayer
+    {
         public static void MakeMove(C4Game game)
         {
             // MakeNextAvailableMove(game);
 
-            GameTree tree = new GameTree(game.CloneState());
+            GameTree tree = new GameTree(game);
 
-            Expand(game, tree, 2);
+            //Expand(tree, 2);
+            tree.Expand(7);
 
             Move? bestMove = GetNextAvailableMove(game);
 
             int bestScore = int.MinValue;
-            foreach (var child in tree.head.Children)
+            foreach (var child in tree.Children)
             {
-                var move = StateDiff(game, tree.head.State, child.State);
+                // TODO: Handle the case where the expanded tree doesn't contain a winner
+                // TODO:    #1 prefer to connect with other pieces
+                // TODO:    #2 prefer to create line with open spaces on both ends
+                // TOOD: or now prefer middle columns (more likely to fulfill #2)
+                int midpoint = game.Width / 2;
+                child.Score += midpoint - Math.Abs(child.Move.X - midpoint);
 
                 if (child.Score > bestScore)
                 {
-                    bestMove = move;
+                    bestMove = child.Move;
                     bestScore = child.Score;
                 }
             }
@@ -69,78 +146,6 @@ namespace PenIsland
             game.RecordMove(bestMove.Value);
         }
 
-        static void Expand(C4Game game, GameTree tree, int limit)
-        {
-            Expand(game, tree, tree.head, limit, 0);
-        }
-
-        static void Expand(C4Game game, GameTree tree, GameTreeNode node, int limit, int depth)
-        {
-            System.Diagnostics.Debug.Assert(limit > 0);
-            System.Diagnostics.Debug.Assert(game.CheckWinner(node.State) == null);
-
-            var playerAtDepth = (game.CurrentPlayer + depth) % game.PlayerCount;
-            var depthPlayerIsMe = playerAtDepth == game.CurrentPlayer;
-            int score = depthPlayerIsMe ? int.MinValue : int.MaxValue;
-
-            ExpandOneLevel(game, tree, node, depth++);
-
-            foreach (var child in node.Children)
-            {
-                var winner = game.CheckWinner(child.State);
-
-                if (winner == null && depth < limit)
-                {
-                    Expand(game, tree, child, limit, depth);
-                }
-                else if (winner != null)
-                {
-                    if (winner == game.CurrentPlayer)
-                        child.Score = int.MaxValue - depth;
-                    else if (winner == Player.Invalid)
-                        child.Score = 0;
-                    else
-                        child.Score = int.MinValue + depth;
-                }
-                else
-                {
-                    System.Diagnostics.Debug.Assert(depth == limit);
-                    child.Score = 0;
-                }
-
-                if (depthPlayerIsMe)
-                    score = Math.Max(score, child.Score);
-                else
-                    score = Math.Min(score, child.Score);
-            }
-
-            node.Score = score;
-        }
-
-        static void ExpandOneLevel(C4Game game, GameTree tree, GameTreeNode node, int depth)
-        {
-            var state = node.State;
-            var playerAtDepth = (game.CurrentPlayer + depth) % game.PlayerCount;
-
-            for (int i = 0; i < game.Width; ++i)
-            {
-                for (int j = 0; j < game.Height; ++j)
-                {
-                    if ((node.State[i, j] != Player.Invalid)
-                        || (j < game.Height - 1) && (state[i, j + 1] == Player.Invalid))
-                    {
-                        continue;
-                    }
-
-                    if (node.State[i, j] == Player.Invalid)
-                    {
-                        var nextState = node.State.Clone();
-                        nextState[i, j] = playerAtDepth;
-                        node.Children.Add(new GameTreeNode(nextState));
-                    }
-                }
-            }
-        }
 
         public static Move GetNextAvailableMove(C4Game game)
         {
