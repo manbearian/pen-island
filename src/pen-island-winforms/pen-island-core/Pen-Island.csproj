@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoPlayer.cs" />
+    <Compile Include="C4AutoPlayer.cs" />
     <Compile Include="C4Board.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -54,6 +55,7 @@
       <DependentUpon>C4Board.cs</DependentUpon>
     </Compile>
     <Compile Include="C4Game.cs" />
+    <Compile Include="DotsAutoPlayer.cs" />
     <Compile Include="DotsBoard.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -61,6 +63,7 @@
       <DependentUpon>DotsBoard.cs</DependentUpon>
     </Compile>
     <Compile Include="DotsGame.cs" />
+    <Compile Include="TttAutoPlayer.cs" />
     <Compile Include="TttGameSettings.cs" />
     <Compile Include="DotsGameSettings.cs" />
     <Compile Include="DotsSettingsForm.cs">
