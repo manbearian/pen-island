@@ -100,7 +100,7 @@ namespace PenIsland
                         score = Math.Min(score, child.Score);
                 }
                 node.Score = score;
-                node.Children = null; // free the memory, we're dont with it
+                node.Children = null; // free the memory, we're done with it
             }
         }
     }
@@ -122,28 +122,35 @@ namespace PenIsland
             GameTree tree = new GameTree(game);
 
             //Expand(tree, 2);
-            tree.Expand(7);
+            tree.Expand(6);
 
-            Move? bestMove = GetNextAvailableMove(game);
-
+            Move bestMove = Move.Invalid;
             int bestScore = int.MinValue;
             foreach (var child in tree.Children)
             {
-                // TODO: Handle the case where the expanded tree doesn't contain a winner
-                // TODO:    #1 prefer to connect with other pieces
-                // TODO:    #2 prefer to create line with open spaces on both ends
-                // TOOD: or now prefer middle columns (more likely to fulfill #2)
-                int midpoint = game.Width / 2;
-                child.Score += midpoint - Math.Abs(child.Move.X - midpoint);
-
                 if (child.Score > bestScore)
                 {
                     bestMove = child.Move;
                     bestScore = child.Score;
                 }
+                else if (child.Score == bestScore)
+                {
+                    // TODO: Handle the case where the expanded tree doesn't contain a winner
+                    // TODO:    #1 prefer to connect with other pieces
+                    // TODO:    #2 prefer to create line with open spaces on both ends
+                    // TOOD: or now prefer middle columns (more likely to fulfill #2)
+                    int midpoint = game.Width / 2;
+                    int adjustedBestScore = midpoint - Math.Abs(bestMove.X - midpoint);
+                    int adjustedChildScore = midpoint - Math.Abs(child.Move.X - midpoint); 
+
+                    if (adjustedChildScore > adjustedBestScore)
+                    {
+                        bestMove = child.Move;
+                    }
+                }
             }
 
-            game.RecordMove(bestMove.Value);
+            game.RecordMove(bestMove);
         }
 
 
