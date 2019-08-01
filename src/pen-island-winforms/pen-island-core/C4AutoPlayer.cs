@@ -63,16 +63,10 @@ namespace PenIsland
 
             for (int i = 0; i < Game.Width; ++i)
             {
-                for (int j = 0; j < Game.Height; ++j)
+                for (int j = Game.Height - 1; j >= 0; --j)
                 {
                     var move = new Move(i, j);
-
-                    if ((state[move] != Player.Invalid)
-                        || (j < Game.Height - 1) && ((state[i, j + 1]) == Player.Invalid))
-                    {
-                        continue;
-                    }
-
+                    
                     if (state[move] == Player.Invalid)
                     {
                         var child = new GameTreeNode(move);
@@ -80,6 +74,9 @@ namespace PenIsland
                         state[move] = playerAtDepth;
                         Expand(depthLimit, child, state, depth + 1);
                         state[move] = Player.Invalid;
+
+                        // there's only one move per column
+                        break;
                     }
                 }
             }
@@ -117,12 +114,9 @@ namespace PenIsland
     {
         public static void MakeMove(C4Game game)
         {
-            // MakeNextAvailableMove(game);
-
             GameTree tree = new GameTree(game);
 
-            //Expand(tree, 2);
-            tree.Expand(6);
+            tree.Expand(8);
 
             Move bestMove = Move.Invalid;
             int bestScore = int.MinValue;
@@ -151,25 +145,6 @@ namespace PenIsland
             }
 
             game.RecordMove(bestMove);
-        }
-
-
-        public static Move GetNextAvailableMove(C4Game game)
-        {
-            for (int j = game.Height - 1; j >= 0; --j)
-            {
-                for (int i = 0; i < game.Width; ++i)
-                {
-                    var move = new Move(i, j);
-                    if (game.GetMove(move) == Player.Invalid)
-                    {
-                        return move;
-                    }
-                }
-            }
-
-            System.Diagnostics.Debug.Fail("Why are there no moves for me to make?!?");
-            return Move.Invalid;
         }
     }
 }
