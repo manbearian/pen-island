@@ -103,13 +103,11 @@ namespace PenIsland
                 return;
             }
 
-#if NEVER
             C4AutoPlayer.MakeMove(Game);
 
             Parent.Refresh();
 
             RunComputerPlayers();
-#endif
         }
 
         public void GetStatusMessage(out string message, out Color color)

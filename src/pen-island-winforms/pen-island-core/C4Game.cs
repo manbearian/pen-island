@@ -25,6 +25,11 @@ namespace PenIsland
                 }
             }
 
+            public State(State copyFrom)
+            {
+                recordedMoves = copyFrom.recordedMoves.Clone() as int[,];
+            }
+
             public int this[Move move]
             {
                 get { return recordedMoves[move.X, move.Y]; }
@@ -36,7 +41,31 @@ namespace PenIsland
                 get { return recordedMoves[x, y]; }
                 set { recordedMoves[x, y] = value; }
             }
+
+            public State Clone()
+            {
+                return new State(this);
+            }
+
+            public override string ToString()
+            {
+                var buffer = new StringBuilder();
+
+                for (int j = 0; j < recordedMoves.GetLength(1); ++j)
+                {
+                    buffer.Append("|");
+                    for (int i = 0; i < recordedMoves.GetLength(0); ++i)
+                    {
+                        var player = this[i, j];
+                        buffer.Append(string.Format("{0}", (player == Player.Invalid) ? "-" : player.ToString()));
+                    }
+                    buffer.Append("|\n");
+                }
+
+                return buffer.ToString();
+            }
         }
+
         public struct Move
         {
             public int X;
@@ -45,6 +74,8 @@ namespace PenIsland
             public Move(int x, int y) { X = x; Y = y; }
             public static bool operator ==(Move a, Move b) { return a.Equals(b); }
             public static bool operator !=(Move a, Move b) { return !a.Equals(b); }
+
+            public static Move Invalid { get { return new Move(-1, -1); } }
 
             public bool Equals(Move other) { return X == other.X && Y == other.Y; }
             public override bool Equals(object o) { return Equals((Move)o); }
@@ -76,6 +107,10 @@ namespace PenIsland
             state = new State(boardWidth, boardHeight);
             this.winLength = winLength;
         }
+        public State CloneState()
+        {
+            return state.Clone();
+        }
 
         public int GetMove(Move move)
         {
@@ -103,8 +138,10 @@ namespace PenIsland
             EndGame();
         }
 
-        int? CheckWinner(State state)
+        public int? CheckWinner(State state)
         {
+            bool remainingMoves = false;
+
             for (int i = 0; i < Width; ++i)
             {
                 for (int j = 0; j < Height; ++j)
@@ -112,6 +149,7 @@ namespace PenIsland
                     var player = state[i, j];
                     if (player == Player.Invalid)
                     {
+                        remainingMoves = true;
                         continue;
                     }
 
@@ -196,6 +234,9 @@ namespace PenIsland
 
                 }
             }
+
+            if (!remainingMoves)
+                return Player.Invalid;
 
             return null;
         }
