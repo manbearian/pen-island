@@ -97,7 +97,7 @@ namespace PenIsland
 
             for (int i = 0; i < Game.Width; ++i)
             {
-                for (int j = Game.Height - 1; j >= 0; --j)
+                for (int j = 0; j < Game.Height; ++j)
                 {
                     var move = new Move(i, j);
 
@@ -108,9 +108,6 @@ namespace PenIsland
                         state[move] = playerAtDepth;
                         Expand(depthLimit, child, state, depth + 1);
                         state[move] = Player.Invalid;
-
-                        // there's only one move per column
-                        break;
                     }
                 }
             }

@@ -121,6 +121,10 @@ namespace PenIsland
             {
                 return base.GetHashCode();
             }
+            public override string ToString()
+            {
+                return string.Format("X={0}, Y={1}", X, Y);
+            }
         }
 
         public int PlayerCount { get; private set; }
